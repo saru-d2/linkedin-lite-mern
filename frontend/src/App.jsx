@@ -6,6 +6,12 @@ import './App.css';
 import Home from './components/Home';
 import Register from './components/auth/Register';
 import SignIn from './components/auth/Signin';
+import applicantRegister from './components/auth/applicantRegister'
+import recruiterRegister from './components/auth/recruiterRegister'
+
+sessionStorage.setItem('userType', '');
+sessionStorage.setItem('userName', '');
+
 function App() {
   return (
     <Router>
@@ -17,6 +23,9 @@ function App() {
         <Route path="/" exact component={Home}/>
         <Route path="/register" component={Register} />
         <Route path="/signin" component={SignIn} />
+        <Route path="/registerApplicant" component={applicantRegister} />
+        <Route path="/register/recruiter" component={recruiterRegister} />
+        
       </div>
     </Router>
   );

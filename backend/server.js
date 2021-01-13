@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const cors = require('cors');
 // for localhost 
 MONGO_URL = 'mongodb://localhost:27017/'
 MONGO_DB = 'test'
@@ -16,13 +16,13 @@ mongoose.connection.once('open', () => console.log('connected'))
 console.log(`mongoose status:${mongoose.STATES[mongoose.connection.readyState]}`);
 const authRouter = require('./routes/authRouter')
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //api routes
 app.use('/auth', authRouter);
-app.use(passport.initialize());
-app.use(passport.session());
+
 app.listen(PORT, function () {
     console.log("Server is running on Port: " + PORT);
 });

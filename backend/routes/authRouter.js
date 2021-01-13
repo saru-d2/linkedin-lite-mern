@@ -7,7 +7,8 @@ const jwt = require('jsonwebtoken');
 
 //user model
 const User = require('../models/UserModel');
-
+const Applicant = require('../models/ApplicantModel');
+const Recruiter = require('../models/RecruiterModel');
 //for finding all users
 // / is at auth/
 
@@ -17,9 +18,9 @@ router.post('/test', (req, res) => {
 })
 
 router.post('/register', (req, res) => {
-    const { name, email, password, password_confirm } = req.body;
-
-    if (!name || !email || !password || !password_confirm) {
+    const { name, email, password, password_confirm, type } = req.body;
+    if (!name || !email || !password || !password_confirm || !type) {
+        console.log('1')
         return res.status(400).json({ msg: 'Please enter all fields' });
     }
 
@@ -33,7 +34,8 @@ router.post('/register', (req, res) => {
         const newUser = new User({
             name,
             email,
-            password
+            password,
+            type
         });
 
         bcrypt.genSalt(10, (err, salt) => {
@@ -69,7 +71,9 @@ router.post('/register', (req, res) => {
 
 router.post('/signin', (req, res) => {
     const { email, password } = req.body;
-
+    console.log(req.body);
+    console.log(`email: ${email}`);
+    console.log(`password: ${password}`);
     if (!email || !password) {
         return res.status(400).json({ msg: 'Please enter all fields' });
     }
@@ -97,49 +101,64 @@ router.post('/signin', (req, res) => {
                         user: {
                             id: user.id,
                             name: user.name,
+                            type: user.type,
                         },
                         msg: "sent"
                     })
                 }
             )
         });
-
-
     })
 })
 
 
+router.post('/register/applicant', (req, res) => {
+    const { email, education, skills } = req.body;
+    console.log('hey');
+    if (!email) {
+        console.log('1')
+        return res.status(400).json({ msg: 'Please enter all fields' });
+    }
+
+    User.findOne({ email }).then(user => {
+        if (!user) return res.status(400).json({ msg: 'email doesnt exsit in database' });
+
+        if (user.type != 'applicant') return res.status(200).json({ msg: 'not applicant' })
+        const newApplicant = new Applicant({
+            user,
+            education,
+            skills
+        });
+
+        newAplicant.save().then(user => {
+            res.json({ data: newApplicant, msg: 'success' });
+        })
+    })
+})
+
+router.post('/register/recruiter', (req, res) => {
+    const { email, contactNumber, Bio } = req.body;
+    console.log('hey');
+    if (!email) {
+        console.log('1')
+        return res.status(400).json({ msg: 'Please enter all fields' });
+    }
+
+    User.findOne({ email }).then(user => {
+        if (!user) return res.status(400).json({ msg: 'email doesnt exsit in database' });
+
+        if (user.type != 'recruiter') return res.status(200).json({ msg: 'not recruiter' })
+        const newRecruiter = new Recruiter({
+            user,
+            contactNumber,
+            Bio
+        });
+
+        newRecruiter.save().then(user => {
+            res.json({ data: newRecruiter, msg: 'success' })
+        })
+    })
+})
+
 
 module.exports = router;
-
-
-
-// router.get('/', function (req, res) {
-//     User.find(function (err, users) {
-//         if (err) {
-//             console.log("***ERROR***");
-//             console.log(`error in backend/routes/Users.js get ${err}`);
-//         }
-//         else {
-//             res.json(users);
-//         }
-//     });
-// });
-
-//for adding new user
-// router.post('/register',  (req, res) => {
-//     console.log(req.body);
-//     const newUser = new User({
-//         name: req.body.name,
-//         email: req.body.email,
-//         date: req.body.date
-//     });
-//     console.log(newUser.name);
-//     newUser.save()
-//         .then(user => { res.status(200).json(user); })
-//         .catch(err => {
-//             console.log("***ERROR***");
-//             console.log(`error in backend/routes/Users.js post ${err}`);
-//             res.status(400).send(err);
-//         });
-// });
