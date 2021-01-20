@@ -1,50 +1,71 @@
+import { Navbar, Nav } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css"
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 import React, { Component } from 'react';
-import { Navbar, Nav, NavDropdown, Button, Form, FormControl } from 'react-bootstrap'
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 export default class NavBar extends Component {
-    constructor(props) {
-        super(props);
+
+    constructor() {
+        super();
+        this.applicantElements = this.applicantElements.bind(this);
+        this.loggedOutElements = this.loggedOutElements.bind(this);
+        this.recruiterElements = this.recruiterElements.bind(this);
+    }
+
+
+    applicantElements() {
+        if (this.props.userType && this.props.userType === 'applicant')
+            return (
+                <React.Fragment>
+                    <Nav.Link href='/appViewJobs'>view jobs</Nav.Link>
+                    <Nav.Link href='/'>applicant</Nav.Link>
+                    <Nav.Link href='/logout'>logout</Nav.Link>
+                </React.Fragment>
+            )
+    }
+
+    recruiterElements() {
+        if (this.props.userType && this.props.userType === 'recruiter')
+            return (
+                <React.Fragment>
+                    <Nav.Link href='/addJob'>add job</Nav.Link>
+                    <Nav.Link href='/recViewJobs'>see jobs u posted</Nav.Link>
+                    <Nav.Link href='/'>recruiter</Nav.Link>
+                    <Nav.Link href='/logout'>logout</Nav.Link>
+                </React.Fragment>
+            )
+    }
+
+    loggedOutElements() {
+        if (this.props.isLoggedIn === false) {
+            console.log('bugger')
+            return (
+                <React.Fragment>
+                    <Nav.Link href='/register'>register</Nav.Link>
+                    <Nav.Link href='/signin'>sign in</Nav.Link>
+                </React.Fragment>
+            )
+        }
     }
 
     render() {
 
-        var userData = () => {
-            if (sessionStorage.getItem("userName") !== '') {
-                return (
-                    <div className="Navbar">
-                        <font color="white">logged in as: *{sessionStorage.getItem("userName")}*, {sessionStorage.getItem("userType")} </font>
-                        <form action="/" class="btn btn-default">
-                            <input type="submit" value="Logout" />
-                        </form>
-                    </div>
-                );
-            } else {
-                return;
-            }
-        }
-
-
         return (
-            <div>
+            <div className='navBar'>
                 <Navbar bg="dark" variant="dark" expand="lg">
-                    <Navbar.Brand href="/">LinkedinWannabe</Navbar.Brand>
+                    <Navbar.Brand href='/' onClick={console.log(this.props.userType)}>Linkedin wannabe</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
-                            <Nav.Link href="/">Home</Nav.Link>
-                            <Nav.Link href="/register">Register</Nav.Link>
-                            <Nav.Link href="/signIn">SignIn</Nav.Link>
-
-                            {/* now for the conditional links */}
-                            <Nav.Link>**{sessionStorage.getItem('userName')}**</Nav.Link>
-                            {userData()}
-                        </Nav>
-
+                    <Nav className='mr-auto'>
+                        {this.loggedOutElements()}
+                        {this.applicantElements()}
+                        {this.recruiterElements()}
+                    </Nav>
                     </Navbar.Collapse>
                 </Navbar>
             </div>
         )
     }
 }
+

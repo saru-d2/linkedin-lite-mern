@@ -1,79 +1,101 @@
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import axios from 'axios';
-import React, { Component, useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { Route } from 'react-router';
 
-
-
-
-class SignIn extends Component {
-
+export default class Signin extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            email: '', password: ''
-        }
-        this.onChangeEmail = this.onChangeName.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
+            userData: {},
+            errors: {}
+        };
+        this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-    }
-    onChangeName(event) {
-        this.setState({ email: event.target.value });
+
     }
 
-    onChangePassword(event) {
-        this.setState({ password: event.target.value });
+    onChange(e) {
+        e.preventDefault();
+        // console.log(e.target.id);
+        var tempData = this.state.userData;
+        tempData[e.target.id] = e.target.value;
+        this.setState({ userData: tempData });
+    }
+
+    validate() {
+        let input = this.state.userData;
+        let errors = {}
+        let isValid = true;
+        if (!input["email"]) {
+            isValid = false;
+            errors["email"] = "Please enter your email Address.";
+        }
+
+        if (typeof input["email"] !== "undefined") {
+
+            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            if (!pattern.test(input["email"])) {
+                isValid = false;
+                errors["email"] = "Please enter valid email address.";
+            }
+        }
+        if (!input['password']) {
+            isValid = false;
+            errors['password'] = 'please enter password'
+        }
+        this.setState({
+            errors: errors
+        })
+        return isValid;
     }
 
     onSubmit(e) {
-        e.preventDefault();
-        const newUser = { email: this.state.email, password: this.state.password };
-
-        axios.post('http://localhost:5000/auth/signin', newUser).then(res => {
-            console.log(res.data.user);
-            alert(`hello ${res.data.user.name}, ${res.data.user.type}`);
-            sessionStorage.setItem('userName', res.data.user.name);
-            sessionStorage.setItem('userEmail', this.state.email);
-            sessionStorage.setItem('userType', res.data.user.type);
-        }).catch(err => {
-            console.log(`err: ${err.response.data}`);
-            alert(`from backend: ${err.response.data.msg}`);
+        if (!this.validate()) {
+            alert('give proper data pls')
+            return
+        }
+        var subData = this.state.userData;
+        axios.post('http://localhost:5000/auth/signin', subData).then(res => {
+            console.log(res);
+            if (res.status == 200){
+                console.log('hi');
+                this.props.onLogIn(res.data.token);
+            }
+            // alert('please continue');
+            sessionStorage.setItem('userEmail', subData.email);
+            window.location.replace('http://localhost:3000/');
+        }).catch((err) => {
+            console.log(err.response.data);
+            alert(err.response.data.msg);
         })
+
     }
+
 
     render() {
         return (
             <div>
-                <h2>signin page</h2>
-                <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <label>Email: </label>
-                        <input type="text"
-                            className="form-control"
-                            value={this.state.email}
-                            onChange={this.onChangeEmail}
-                        />
-                    </div>
+                <h1>login/ signin</h1>
 
-                    <div className="form-group">
-                        <label>Password </label>
-                        <input type="text"
-                            className="form-control"
-                            value={this.state.password}
-                            onChange={this.onChangePassword}
-                        />
-                    </div>
+                <div className='form-group'>
+                    <label>email</label>
+                    <input type='text' required id='email' onChange={this.onChange} />
+                    <div className="text-danger">{this.state.errors.email}</div>
+                </div>
 
-                    <div className="form-group">
-                        <input type="submit" value="Sign-In!" className="btn btn-primary" />
-                    </div>
+                <div className='form-group'>
+                    <label>password</label>
+                    <input type='text' required id='password' onChange={this.onChange} />
+                    <div className="text-danger">{this.state.errors.password}</div>
+                </div>
 
-                </form>
+                <div className='submitButton'>
+                    <input type='button' value='sign in' onClick={this.onSubmit} />
+                </div>
+
             </div>
-
-
         )
     }
-}
 
-export default SignIn;
+}

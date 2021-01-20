@@ -7,26 +7,24 @@ const defaultLangs = [
     { label: "C", value: "C" }, { label: "C++", value: "C++" }, { label: "python", value: "python" }, { label: "java", value: "java" }
 ]
 
-
-export default class ApplicantRegister extends Component {
+class ApplicantRegister extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            email: sessionStorage.getItem('userEmail'),
+            email: '',
             eduList: [{ instiName: '', startYear: '', endYear: '' }],
-            skills: []
+            skills: [],
+            errors: {},
         }
-        this.onSubmit = this.onSubmit.bind(this);
         this.onChangeEdu = this.onChangeEdu.bind(this);
         this.onAddEdu = this.onAddEdu.bind(this);
         this.onRemoveEdu = this.onRemoveEdu.bind(this);
         this.onChangeSkills = this.onChangeSkills.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+
 
     }
-
-
-
     onChangeEdu(e, index) {
         const list = [...this.state.eduList];
         const { name, value } = e.target;
@@ -50,18 +48,35 @@ export default class ApplicantRegister extends Component {
     }
 
     onSubmit() {
+        console.log(this.props.match.params.id)
         console.log('submitted');
         var skillList = []
         this.state.skills.map((ob) => {
-            skillList = [...skillList, {lang: ob.value}]
+            skillList = [...skillList, { lang: ob.value }]
         })
         console.log(skillList);
+        const subObject = {
+            email: this.props.match.params.id,
+            education: this.state.eduList,
+            skills: skillList
+        }
+        console.log(subObject)
+        axios.post('http://localhost:5000/auth/register/applicant', subObject)
+            .then(res => {
+                alert("done! please continue to signin!");
+                window.location.replace('http://localhost:3000/signin/');
+            }).catch(
+                err => {
+                    console.log(err.response);
+                    alert(`from backend: ${err}`);
+                    this.setState({errors: err.response.data})
+                    return;
+                });
     }
-
 
     render() {
         return (
-            <div className='react'>
+            <div className='react' style={{ marginLeft: '5%', marginRight: '20%' }}>
                 <h2>register for applicant</h2>
                  list ur education pls:
                 {
@@ -86,7 +101,9 @@ export default class ApplicantRegister extends Component {
                         )
                     })
                 }
+                
                 {<button onClick={() => this.onAddEdu()}>Add</button>}
+                <div className="text-danger">{this.state.errors.education}</div>
 
                 <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.eduList)}</div>
                 <br />
@@ -103,12 +120,14 @@ export default class ApplicantRegister extends Component {
                         />
                     </div>
                 }
+          <div className="text-danger">{this.state.errors.skills}</div>
 
                 <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.skills)}</div>
-                <button onClick={() =>{this.onSubmit()}} >submit</button>
+                <button onClick={() => { this.onSubmit() }} >submit</button>
 
             </div>
         )
     }
-
 }
+
+export default ApplicantRegister;
