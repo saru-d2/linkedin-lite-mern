@@ -12,30 +12,31 @@ const Recruiter = require('../models/RecruiterModel');
 //for finding all users
 // / is at auth/
 
+//validators
+const registerValidate = require('../validators/auth/registerValidator')
+const applicantValidate = require('../validators/auth/applicantValidator')
+const recruiterValidate = require('../validators/auth/recruiterValidator')
+
 router.post('/test', (req, res) => {
     console.log("wow");
     res.send('connected!');
 })
 
 router.post('/register', (req, res) => {
-    const { name, email, password, password_confirm, type } = req.body;
-    if (!name || !email || !password || !password_confirm || !type) {
-        console.log('1')
-        return res.status(400).json({ msg: 'Please enter all fields' });
+    var {errors, isValid} = registerValidate(req.body);
+    if (!isValid){
+        return res.status(400).json(errors)
     }
-
-    if (password != password_confirm) {
-        return res.status(400).json({ msg: 'Passwords dont match' });
-    }
+    email = req.body.email;
 
     User.findOne({ email }).then(user => {
-        if (user) return res.status(400).json({ msg: 'email exsits in database numbskull' });
+        if (user) return res.status(400).json({ msg: 'email exsits in database' });
 
         const newUser = new User({
-            name,
-            email,
-            password,
-            type
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            type: req.body.type
         });
 
         bcrypt.genSalt(10, (err, salt) => {
@@ -65,7 +66,7 @@ router.post('/register', (req, res) => {
                 });
             })
         })
-    })
+    }).catch(e => console.log(e));
 })
 
 
@@ -89,7 +90,7 @@ router.post('/signin', (req, res) => {
                 return res.status(400).json({ msg: "password is wrong" });
 
             jwt.sign(
-                { id: user.id },
+                { id: user.id, name: user.name, email: user.email, type: user.type },
                 config.get('jwtSecret'),
                 {
                     expiresIn: 3600
@@ -114,12 +115,11 @@ router.post('/signin', (req, res) => {
 
 router.post('/register/applicant', (req, res) => {
     const { email, education, skills } = req.body;
-    console.log('hey');
-    if (!email) {
-        console.log('1')
-        return res.status(400).json({ msg: 'Please enter all fields' });
+    console.log(req.body);
+    const {errors, isValid} = applicantValidate(req.body);
+    if (!isValid){
+        return res.status(400).json(errors)
     }
-
     User.findOne({ email }).then(user => {
         if (!user) return res.status(400).json({ msg: 'email doesnt exsit in database' });
 
@@ -127,18 +127,30 @@ router.post('/register/applicant', (req, res) => {
         const newApplicant = new Applicant({
             user,
             education,
-            skills
+            skills,
+            // image,
+            // resume
         });
 
-        newAplicant.save().then(user => {
+        newApplicant.save().then(user => {
             res.json({ data: newApplicant, msg: 'success' });
         })
     })
 })
 
 router.post('/register/recruiter', (req, res) => {
+
+
     const { email, contactNumber, Bio } = req.body;
-    console.log('hey');
+    console.log(req.body);
+    console.log('recrioter reg');
+
+    const {errors, isValid} = recruiterValidate(req.body);
+
+    if (!isValid) {
+        return res.status(400).json(errors)
+    }
+
     if (!email) {
         console.log('1')
         return res.status(400).json({ msg: 'Please enter all fields' });

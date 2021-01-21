@@ -8,7 +8,7 @@ const RecruiterSchema = new Schema({
         ref: 'users', required: true
     },
 	contactNumber :{
-        type: Number,
+        type: String,
         required: true,
         default: 0
     },

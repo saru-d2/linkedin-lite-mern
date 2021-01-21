@@ -1,4 +1,5 @@
 import React, { Component, useState } from 'react';
+import { render } from 'react-dom';
 import Creatable from 'react-select/creatable';
 import '../../App.css'
 const axios = require('axios');
@@ -16,11 +17,15 @@ class ApplicantRegister extends Component {
             eduList: [{ instiName: '', startYear: '', endYear: '' }],
             skills: [],
             errors: {},
+            // image: null,
+            // resume: null,
         }
         this.onChangeEdu = this.onChangeEdu.bind(this);
         this.onAddEdu = this.onAddEdu.bind(this);
         this.onRemoveEdu = this.onRemoveEdu.bind(this);
         this.onChangeSkills = this.onChangeSkills.bind(this);
+        // this.onChangeImage = this.onChangeImage.bind(this);
+        // this.onChangeResume = this.onChangeResume.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
 
@@ -47,6 +52,24 @@ class ApplicantRegister extends Component {
         this.setState({ skills: value });
     }
 
+    // onChangeImage(e) {
+    //     var tempthis = this;
+    //     var reader = new FileReader();
+    //     reader.onload = function (uploadFile) {
+    //         tempthis.setState({ image: uploadFile.target.result })
+    //     }
+    //     reader.readAsDataURL(e.target.files[0]);
+    // }
+
+    // onChangeResume(e) {
+    //     var tempthis = this;
+    //     var reader = new FileReader();
+    //     reader.onload = function (uploadFile) {
+    //         tempthis.setState({ resume: uploadFile.target.result })
+    //     }
+    //     reader.readAsDataURL(e.target.files[0]);
+    // }
+
     onSubmit() {
         console.log(this.props.match.params.id)
         console.log('submitted');
@@ -58,7 +81,9 @@ class ApplicantRegister extends Component {
         const subObject = {
             email: this.props.match.params.id,
             education: this.state.eduList,
-            skills: skillList
+            skills: skillList,
+            // image: this.state.image,
+            // resume: this.state.resume,
         }
         console.log(subObject)
         axios.post('http://localhost:5000/auth/register/applicant', subObject)
@@ -69,7 +94,8 @@ class ApplicantRegister extends Component {
                 err => {
                     console.log(err.response);
                     alert(`from backend: ${err}`);
-                    this.setState({errors: err.response.data})
+                    if (err)
+                        this.setState({ errors: err.response.data })
                     return;
                 });
     }
@@ -101,7 +127,7 @@ class ApplicantRegister extends Component {
                         )
                     })
                 }
-                
+
                 {<button onClick={() => this.onAddEdu()}>Add</button>}
                 <div className="text-danger">{this.state.errors.education}</div>
 
@@ -120,12 +146,27 @@ class ApplicantRegister extends Component {
                         />
                     </div>
                 }
-          <div className="text-danger">{this.state.errors.skills}</div>
+                <div className="text-danger">{this.state.errors.skills}</div>
+
+                {/* <div className='form-group'>
+                    <label>image</label>
+                    <input type='file' required id='image' onChange={this.onChangeImage} />
+                    <div className="text-danger">{this.state.errors.image}</div>
+                </div>
+                <div className='form-group'>
+                    <label>resume</label>
+                    <input type='file' required id='resume' onChange={this.onChangeResume} />
+                    <div className="text-danger">{this.state.errors.resume}</div>
+                </div>
 
                 <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.skills)}</div>
+                {this.state.image}
+                {this.state.resume} */}
+
                 <button onClick={() => { this.onSubmit() }} >submit</button>
 
             </div>
+
         )
     }
 }

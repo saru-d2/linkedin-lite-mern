@@ -12,13 +12,8 @@ export default class AppViewJobs extends Component {
             jobList: [],
             Loading: true
         }
-        this.onClickCard = this.onClickCard.bind(this);
     }
 
-    onClickCard(e) {
-        e.preventDefault();
-        console.log('clicked');
-    }
 
     componentDidMount() {
         const data = { email: this.state.email }
@@ -34,21 +29,24 @@ export default class AppViewJobs extends Component {
 
     render() {
         if (this.state.Loading)
-            return(<h1>...Loading..</h1>);
+            return (<h1>...Loading..</h1>);
 
         console.log(this.state.jobList)
-        var jobCards = this.state.jobList.map ((job) => 
-            <div className='card'>
-                <AppJobCard job={job} onClick={this.onClickCard} />
-            </div>
+        var jobCards = this.state.jobList.map((job) =>
+            <React.Fragment>
+                <div className='card'>
+                    <AppJobCard job={job}  />
+                </div>
+                <br />
+            </React.Fragment>
         );
         console.log();
 
         return (
             // {jobCards}
             <div>
-            <h1>wow</h1>
-            {jobCards}
+                <h1>wow</h1>
+                {jobCards}
             </div>
         )
     }

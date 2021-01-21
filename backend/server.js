@@ -15,6 +15,8 @@ mongoose.connection.once('open', () => console.log('connected'))
     });
 console.log(`mongoose status:${mongoose.STATES[mongoose.connection.readyState]}`);
 const authRouter = require('./routes/authRouter')
+const applicantRouter = require('./routes/applicantRouter')
+const recruiterRouter = require('./routes/recruiterRouter')
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -22,7 +24,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //api routes
 app.use('/auth', authRouter);
-
+app.use('/applicant', applicantRouter);
+app.use('/recruiter', recruiterRouter);
 app.listen(PORT, function () {
     console.log("Server is running on Port: " + PORT);
 });

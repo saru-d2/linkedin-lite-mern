@@ -10,6 +10,8 @@ import RecruiterRegister from './components/auth/registerRecruiter'
 import AddJob from './components/recruiter/addJob'
 import RecViewJobs from './components/recruiter/recViewJobs'
 import AppViewJobs from './components/applicant/appViewJobs'
+import AppJobCardDetails from './components/applicant/appJobCardDetails'
+
 const Signin = require('./components/auth/signin').default;
 export default class App extends Component {
   constructor(props) {
@@ -85,9 +87,10 @@ export default class App extends Component {
           <Route exact path='/registerApplicant/:id' component={ApplicantRegister} />
           <Route exact path='/registerRecruiter/:id' component={RecruiterRegister} />
           <Route exact path='/signin' render={props => <Signin onLogIn={this.onLogIn} />} />
-          <Route exact path="/addjob" render={props => <AddJob userEmail={this.state.userEmail}/>} />
-          <Route exact path="/recviewjobs" render={props => <RecViewJobs userEmail={this.state.userEmail}/>} />
-          <Route exact path="/appviewjobs" render={props => <AppViewJobs userEmail={this.state.userEmail}/>} />
+          <Route exact path="/addjob" render={props => <AddJob userEmail={this.state.userEmail} />} />
+          <Route exact path="/recviewjobs" render={props => <RecViewJobs userEmail={this.state.userEmail} />} />
+          <Route exact path="/appviewjobs" render={props => <AppViewJobs userEmail={this.state.userEmail} />} />
+          <Route exact path="/appjobcarddetails" render={props => <AppJobCardDetails userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
 
 
 
