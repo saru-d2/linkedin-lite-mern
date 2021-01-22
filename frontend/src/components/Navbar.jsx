@@ -20,6 +20,7 @@ export default class NavBar extends Component {
                 <React.Fragment>
                     <Nav.Link href='/appViewJobs'>view jobs</Nav.Link>
                     <Nav.Link href='/'>applicant</Nav.Link>
+                    <Nav.Link href='/appViewApplications'>see your applications</Nav.Link>
                     <Nav.Link href='/logout'>logout</Nav.Link>
                 </React.Fragment>
             )
@@ -57,11 +58,11 @@ export default class NavBar extends Component {
                     <Navbar.Brand href='/' onClick={console.log(this.props.userType)}>Linkedin wannabe</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className='mr-auto'>
-                        {this.loggedOutElements()}
-                        {this.applicantElements()}
-                        {this.recruiterElements()}
-                    </Nav>
+                        <Nav className='mr-auto'>
+                            {this.loggedOutElements()}
+                            {this.applicantElements()}
+                            {this.recruiterElements()}
+                        </Nav>
                     </Navbar.Collapse>
                 </Navbar>
             </div>

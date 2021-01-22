@@ -1,16 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const jobRatingSchema = Schema({
-    rating: {
-        type: Number, min: 0, max: 5, required: true
-    },
-    applicant: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'applications', required: true
-    }
-});
-
 const JobSchema = new Schema({
     applications: [
         {
@@ -51,11 +41,19 @@ const JobSchema = new Schema({
         type: Number,
         required: true
     },
-    ratings: {
-        type: [jobRatingSchema],
+    
+    numRated: {
+        type: Number,
+        required: true,
+        default: 0
     },
-    skills :[{
-        lang : { type: String, required: true },   
+    totalRating: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    skills: [{
+        lang: { type: String, required: true },
     }],
 })
 

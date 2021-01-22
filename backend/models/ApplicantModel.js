@@ -25,13 +25,7 @@ const ApplicantSchema = new Schema({
         required: true,
         default: 0
     },
-    // image: {
-	// 	type: String,
-	// },
-	// resume: {
-	// 	type: String,
-	// }
-
+    
 });
 
 module.exports = Applicant = mongoose.model('Applicants', ApplicantSchema);

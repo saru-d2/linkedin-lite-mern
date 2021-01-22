@@ -10,7 +10,8 @@ export default class AppViewJobs extends Component {
         this.state = {
             email: this.props.userEmail,
             jobList: [],
-            Loading: true
+            Loading: true,
+            search: null,
         }
     }
 
@@ -27,6 +28,17 @@ export default class AppViewJobs extends Component {
             }).catch(err => console.log(err.response))
     }
 
+    onChangeSearch(e) { 
+        e.preventDefault();
+        this.setState({search: e.target.value})
+    }
+
+    onSubmitSearch(e) {
+        e.preventDefault();
+        var req = {search: this.state.search};
+        
+    }
+
     render() {
         if (this.state.Loading)
             return (<h1>...Loading..</h1>);
@@ -35,7 +47,7 @@ export default class AppViewJobs extends Component {
         var jobCards = this.state.jobList.map((job) =>
             <React.Fragment>
                 <div className='card'>
-                    <AppJobCard job={job}  />
+                    <AppJobCard job={job} />
                 </div>
                 <br />
             </React.Fragment>
@@ -45,6 +57,14 @@ export default class AppViewJobs extends Component {
         return (
             // {jobCards}
             <div>
+                <div className='row'>
+                    <div className='col'>
+                        <input className="form-control" onChange={this.onChangeSearch} placeholder="Search" id="search" type="text" />
+                    </div>
+                    <div className='col'>
+                        <button onClick={this.o}></button>
+                    </div>
+                </div>
                 <h1>wow</h1>
                 {jobCards}
             </div>

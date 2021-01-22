@@ -13,6 +13,7 @@ export default class AppJobCard extends Component {
     }
 
     componentDidMount() {
+        console.log('hi')
         const req = { recId: this.props.job.recruiter };
         axios.post('http://localhost:5000/applicant/getRecruiterUser', req).then(res => {
             console.log(res.data)

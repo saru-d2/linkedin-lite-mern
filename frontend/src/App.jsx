@@ -11,6 +11,10 @@ import AddJob from './components/recruiter/addJob'
 import RecViewJobs from './components/recruiter/recViewJobs'
 import AppViewJobs from './components/applicant/appViewJobs'
 import AppJobCardDetails from './components/applicant/appJobCardDetails'
+import RecJobCardDetails from './components/recruiter/recJobCardDetails'
+import RecSeeJobApps from './components/recruiter/recSeeJobApps'
+import AppViewApplications from './components/applicant/appViewApplications'
+
 
 const Signin = require('./components/auth/signin').default;
 export default class App extends Component {
@@ -91,8 +95,9 @@ export default class App extends Component {
           <Route exact path="/recviewjobs" render={props => <RecViewJobs userEmail={this.state.userEmail} />} />
           <Route exact path="/appviewjobs" render={props => <AppViewJobs userEmail={this.state.userEmail} />} />
           <Route exact path="/appjobcarddetails" render={props => <AppJobCardDetails userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
-
-
+          <Route exact path="/recjobcarddetails" render={props => <RecJobCardDetails userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
+          <Route exact path="/recseejobapps" render={props => <RecSeeJobApps userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
+          <Route exact path="/appviewapplications" render={props => <AppViewApplications userEmail={this.state.userEmail} />} />
 
           <Route exact path="/logout" render={this.onLogOut} />
         </div>

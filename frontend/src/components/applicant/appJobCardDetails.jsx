@@ -13,6 +13,9 @@ export default class AppJobCardDetails extends Component {
             SOP: '',
             errors: {},
         }
+
+        this.onChangeSOP = this.onChangeSOP.bind(this);
+        this.onApply = this.onApply.bind(this);
     }
 
     componentDidMount() {
@@ -40,8 +43,6 @@ export default class AppJobCardDetails extends Component {
                         console.log(err);
                     })
             }).catch(err => console.log(err));
-
-
     }
 
     onApply(e) {
@@ -55,12 +56,21 @@ export default class AppJobCardDetails extends Component {
         }
 
         axios.post('http://localhost:5000/applicant/applyForJob', req)
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err))
+            .then(res => {
+                console.log(res.data)
+                alert('successfully applied!')
+                window.location.replace('http://localhost:3000/');
+            })
+            .catch(err => {
+                console.log(err);
+                if (err['response'])
+                    alert(err.response.data.msg);
+                else alert(err);
+            })
     }
 
     onChangeSOP(e) {
-        e.preventDefault();
+        // e.preventDefault();
         this.setState({ SOP: e.target.value })
     }
 
@@ -82,10 +92,10 @@ export default class AppJobCardDetails extends Component {
 
                 <div className='form-group'>
                     <label>SOP</label>
-                    <input type='text' required id='SOP' onChange={ () =>{this.onChangeSOP()}} />
+                    <input type='text' required id='SOP' onChange={this.onChangeSOP} />
                     <div className="text-danger">{this.state.errors.SOP}</div>
                 </div>
-                <button onClick={() => { this.onApply() }}>Apply!</button>
+                <button onClick={this.onApply}>Apply!</button>
                 {JSON.stringify(this.state.job)}
                 {JSON.stringify(this.state.recruiterUser)}
             </div>

@@ -10,12 +10,16 @@ const ApplicationSchema = new Schema({
         type: String
     },
     status: {
-        type: Number
+        type: String
     },
     job : {
         type : mongoose.Schema.Types.ObjectId,
         ref: 'jobs', required:true
     },
+    date : {
+        type: Date,
+        default: Date.now,
+    }
 })
 
 module.exports = Application = mongoose.model("Applications", ApplicationSchema);
