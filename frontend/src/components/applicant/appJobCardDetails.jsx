@@ -8,10 +8,11 @@ export default class AppJobCardDetails extends Component {
 
         this.state = {
             job: {},
-            recruiterUser: {},
+            recruiter: {},
             application: null,
             SOP: '',
             errors: {},
+            Loading: true,
         }
 
         this.onChangeSOP = this.onChangeSOP.bind(this);
@@ -21,27 +22,10 @@ export default class AppJobCardDetails extends Component {
     componentDidMount() {
         var req = { jobId: this.props.jobId };
         console.log(req);
-
-
         axios.post('http://localhost:5000/applicant/getJobDetails', req)
             .then(res => {
                 console.log(res);
-                this.setState({ job: res.data });
-                console.log(this.state.job)
-                var req2 = { recId: this.state.job.recruiter };
-                axios.post('http://localhost:5000/applicant/getRecruiterUser', req2)
-                    .then(res => {
-                        console.log(res.data)
-                        this.setState({
-                            recruiterUser: res.data,
-                        })
-                        console.log(res.data)
-                    }).catch(err => {
-                        this.setState({
-                            errors: err
-                        });
-                        console.log(err);
-                    })
+                this.setState({ job: res.data, Loading: false });
             }).catch(err => console.log(err));
     }
 
@@ -64,7 +48,7 @@ export default class AppJobCardDetails extends Component {
             .catch(err => {
                 console.log(err);
                 if (err['response'])
-                    alert(err.response.data.msg);
+                alert(err.response.data.msg);
                 else alert(err);
             })
     }
@@ -75,6 +59,8 @@ export default class AppJobCardDetails extends Component {
     }
 
     render() {
+if (this.state.Loading) return(<h1>LOADING</h1>)
+
         return (
             <div>
                 <h1>appjobcarddetails</h1>
@@ -86,8 +72,8 @@ export default class AppJobCardDetails extends Component {
                     maxPositions: {this.state.job.maxPositions} <br />
                     duration: {this.state.job.duration} months <br />
                     deadline: <Moment format="YYYY/MM/DD">{this.state.job.deadline}</Moment> <br />
-                    recruiter name: {this.state.recruiterUser.name}<br />
-                    recruiter email: {this.state.recruiterUser.email}
+                    recruiter name: {this.state.job.recruiter.user.name}<br />
+                    recruiter email: {this.state.job.recruiter.user.email}
                 </p>
 
                 <div className='form-group'>

@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const ApplicantSchema = new Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users', required: true
+        ref: 'Users', required: true
     },
     totalRating: {
         type: Number,

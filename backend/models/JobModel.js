@@ -5,12 +5,12 @@ const JobSchema = new Schema({
     applications: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'applications', required: true
+            ref: 'Applications', required: true
         }
     ],
     recruiter: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'recruiters', required: true
+        ref: 'Recruiters', required: true
     },
     jobType: {
         type: String,

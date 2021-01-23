@@ -7,8 +7,9 @@ export default class AppJobCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            recruiterUser: {},
-            errors: {}
+            recruiter: {},
+            errors: {},
+            Loading: true
         }
     }
 
@@ -18,7 +19,8 @@ export default class AppJobCard extends Component {
         axios.post('http://localhost:5000/applicant/getRecruiterUser', req).then(res => {
             console.log(res.data)
             this.setState({
-                recruiterUser: res.data,
+                recruiter: res.data,
+                Loading: false
             })
             console.log(res.data)
         }).catch(err => {
@@ -34,6 +36,7 @@ export default class AppJobCard extends Component {
     }
 
     render() {
+        if (this.state.Loading) return (<h1>loading</h1>)
         return (
             <div>
                 <div className='card-body row'>
@@ -42,7 +45,7 @@ export default class AppJobCard extends Component {
                         <p>
                             jobType: {this.props.job.jobType} <br />
                         salary: {this.props.job.salary} <br />
-
+                        recruiter: {this.state.recruiter.user.name}
                         </p>
                     </div>
                     <div className='col'>

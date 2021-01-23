@@ -17,6 +17,13 @@ console.log(`mongoose status:${mongoose.STATES[mongoose.connection.readyState]}`
 const authRouter = require('./routes/authRouter')
 const applicantRouter = require('./routes/applicantRouter')
 const recruiterRouter = require('./routes/recruiterRouter')
+
+require('./models/ApplicantModel')
+require('./models/ApplicationModel')
+require('./models/UserModel')
+require('./models/JobModel')
+require('./models/RecruiterModel')
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());

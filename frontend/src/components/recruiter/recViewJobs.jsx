@@ -17,6 +17,7 @@ export default class RecViewJobs extends Component {
 
     componentDidMount() {
         const data = { email: this.state.email };
+        console.log('recvoewjob')
         axios.post('http://localhost:5000/recruiter/listJobs', data)
             .then((response) => {
                 console.log(`${response.data}`);

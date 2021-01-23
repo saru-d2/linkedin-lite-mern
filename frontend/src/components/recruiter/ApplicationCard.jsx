@@ -8,7 +8,6 @@ export default class ApplicationCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: {},
             applicant: {},
             Loading: true,
         }
@@ -20,18 +19,12 @@ export default class ApplicationCard extends Component {
 
     componentDidMount() {
         var req = { applicantId: this.props.application.applicant }
-        axios.post('http://localhost:5000/recruiter/getApplicantFromId', req).then(res => {
+        axios.post('http://localhost:5000/recruiter/getApplicantAndUser', req).then(res => {
             console.log(res.data);
             this.setState({
                 applicant: res.data,
+                Loading: false,
             })
-            req = { userId: this.state.applicant.user }
-            axios.post('http://localhost:5000/recruiter/getUserFromId', req).then(res => {
-                this.setState({
-                    user: res.data,
-                    Loading: false,
-                })
-            }).catch(err => console.log(err.response))
             console.log(res.data);
         }).catch(err => console.log(err.response))
     }
@@ -134,8 +127,8 @@ export default class ApplicationCard extends Component {
         return (
             <div style={{ 'marginLeft': '5%', }}>
                 <div className='row' >
-                    applicant name: {this.state.user.name}<br />
-                applicant email: {this.state.user.email} <br />
+                    applicant name: {this.state.applicant.user.name}<br />
+                applicant email: {this.state.applicant.user.email} <br />
                 application status: {this.props.application.status}
                 </div>
                 education:

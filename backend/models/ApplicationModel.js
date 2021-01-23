@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ApplicationSchema = new Schema({
     applicant: {
         type : mongoose.Schema.Types.ObjectId,
-        ref: 'applicants', required: true
+        ref: 'Applicants', required: true
     },
     SOP: {
         type: String
@@ -14,7 +14,7 @@ const ApplicationSchema = new Schema({
     },
     job : {
         type : mongoose.Schema.Types.ObjectId,
-        ref: 'jobs', required:true
+        ref: 'Jobs', required:true
     },
     date : {
         type: Date,

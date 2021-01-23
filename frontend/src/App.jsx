@@ -3,6 +3,7 @@ import { Component } from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { Redirect, BrowserRouter as Router, Route } from 'react-router-dom';
+import Test from './test'
 import NavBar from './components/Navbar';
 import Register from './components/auth/register';
 import ApplicantRegister from './components/auth/registerApplicant'
@@ -74,7 +75,7 @@ export default class App extends Component {
   }
 
   //occurs once
-  componentWillMount() {
+  componentDidMount() {
     console.log('app mounting');
     if (localStorage)
       if (localStorage.userToken) this.onLogIn(localStorage.userToken);
@@ -87,6 +88,7 @@ export default class App extends Component {
         <div style={{ marginLeft: '5%', marginRight: '20%' }}>
           <h1>Hi {this.state.userEmail}</h1>
 
+          <Route exact path='/test' component={Test} />
           <Route exact path='/register' component={Register} />
           <Route exact path='/registerApplicant/:id' component={ApplicantRegister} />
           <Route exact path='/registerRecruiter/:id' component={RecruiterRegister} />

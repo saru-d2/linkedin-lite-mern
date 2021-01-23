@@ -11,8 +11,10 @@ export default class AppViewJobs extends Component {
             email: this.props.userEmail,
             jobList: [],
             Loading: true,
-            search: null,
+            search: '',
         }
+        this.onSubmitSearch = this.onSubmitSearch.bind(this);
+        this.onChangeSearch = this.onChangeSearch.bind(this);
     }
 
 
@@ -28,15 +30,23 @@ export default class AppViewJobs extends Component {
             }).catch(err => console.log(err.response))
     }
 
-    onChangeSearch(e) { 
+    onChangeSearch(e) {
         e.preventDefault();
-        this.setState({search: e.target.value})
+        this.setState({ search: e.target.value })
     }
 
     onSubmitSearch(e) {
         e.preventDefault();
-        var req = {search: this.state.search};
-        
+        var req = { search: this.state.search };
+        axios.post('http://localhost:5000/applicant/viewjobs', req)
+            .then((res) => {
+                console.log(`${res.data}`);
+                this.setState({
+                    jobList: res.data,
+                    Loading: false
+                });
+            }).catch(err => console.log(err.response))
+
     }
 
     render() {
@@ -62,7 +72,7 @@ export default class AppViewJobs extends Component {
                         <input className="form-control" onChange={this.onChangeSearch} placeholder="Search" id="search" type="text" />
                     </div>
                     <div className='col'>
-                        <button onClick={this.o}></button>
+                        <button onClick={this.onSubmitSearch}>search!</button>
                     </div>
                 </div>
                 <h1>wow</h1>
