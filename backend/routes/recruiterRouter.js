@@ -32,7 +32,7 @@ router.post('/addJob', authMiddleware((req, res, midRes) => {
         return res.status(400).json(errors);
     }
     const email = req.body.email;
-    Recruiter.findOne({ _id: midRes.id }).populate({
+    Recruiter.findOne({ user: midRes.id }).populate({
         path: 'user',
         match: { email: email },
     }).then(recruiter => {

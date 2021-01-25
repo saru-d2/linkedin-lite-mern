@@ -51,12 +51,24 @@ export default class ApplicationCard extends Component {
     }
     onAccept(e) {
         e.preventDefault();
-        var req = { applicationId: this.props.application._id }
+        var req = { applicationId: this.props.application._id };
+
+        var mailDeets = { to_email: this.props.application.applicant.user.email, job: this.state.job.jobTitle, to_name: this.props.application.applicant.user.name, from_name: this.state.job.recruiter.user.name }
+
+        console.log(mailDeets)
+
         axios.post('http://localhost:5000/recruiter/acceptApplicant', req)
             .then(res => {
-                alert('accepted');
-                window.location.reload();
-                //to send email
+                // to send email
+                emailjs.send('ssad.2019101016', 'ssad.template', mailDeets, 'user_1bOBkzRuF9QtdqoZQxHNE')
+                    .then((response) => {
+                        console.log('SUCCESS!', response.status, response.text);
+                        alert('accepted');
+                        window.location.reload();
+                    }, (err) => {
+                        console.log('FAILED...', err);
+                    });
+
             })
             .catch(err => {
                 if (err['response']['data']) {
@@ -68,6 +80,7 @@ export default class ApplicationCard extends Component {
             })
         console.log('accept')
     }
+
     onShortlist(e) {
         e.preventDefault();
         var req = { applicationId: this.props.application._id }
