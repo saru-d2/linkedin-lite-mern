@@ -11,6 +11,8 @@ const Application = require('../models/ApplicationModel');
 
 //validators
 const addJobValidator = require('../validators/recruiter/addJobValidator');
+const editJobValidator = require('../validators/recruiter/editJobValidator');
+const editRecValidator = require('../validators/recruiter/editRecValidator');
 const ApplicantModel = require("../models/ApplicantModel");
 
 router.post('/', authMiddleware((req, res, midRes) => {
@@ -208,6 +210,11 @@ router.post('/editJob', authMiddleware((req, res, midRes) => {
     if (midRes.type !== 'recruiter') {
         return res.status(500).json({ msg: 'not an recruiter' })
     }
+    const { errors, isValid } = editJobValidator(req.body);
+    if (!isValid) {
+        console.log(errors);
+        return res.status(400).json(errors);
+    }
     var j = req.body;
     console.log(req.body);
     Job.findOne({ _id: req.body._id }).then(job => {
@@ -254,7 +261,7 @@ router.post('/rateApplicant', authMiddleware((req, res, midRes) => {
 
             console.log(typeof (req.body.rating))
             console.log(typeof (applicant.numRated))
-            console.log(typeof (applicant.totalRating))  
+            console.log(typeof (applicant.totalRating))
             applicant.save();
             return res.json(applicant);
         }).catch(err => { console.log(err) })
@@ -278,11 +285,15 @@ router.post('/editProfile', authMiddleware((req, res, midRes) => {
         return res.status(500).json({ msg: 'not a recruiter' })
     }
     console.log(req.body)
+    const { errors, isValid } = editRecValidator(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors)
+    }
     Recruiter.findOne({ user: midRes.id }).then(recruiter => {
         recruiter.contactNumber = req.body.contactNumber;
         recruiter.Bio = req.body.Bio;
         recruiter.save();
-        User.findOne({_id: midRes.id}).then(user => {
+        User.findOne({ _id: midRes.id }).then(user => {
             user.name = req.body.name
             user.save()
         }).catch(e => { return res.status(400).json(error) })

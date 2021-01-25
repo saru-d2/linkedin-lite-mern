@@ -11,6 +11,8 @@ const Application = require('../models/ApplicationModel');
 const authMiddleware = require('../middleware/authMiddleware');
 const { application } = require("express");
 
+const editAppValidator = require('../validators/applicant/editAppValidator')
+
 router.post('/', authMiddleware((req, res, midRes) => {
     console.log('conected');
     console.log(midRes)
@@ -199,10 +201,10 @@ router.post('/rateJob', authMiddleware((req, res, midRes) => {
     if (midRes.type !== 'applicant') {
         return res.status(500).json({ msg: 'not an applicant' })
     }
-    Application.findOne({_id: req.body.application._id}).then(application => {
+    Application.findOne({ _id: req.body.application._id }).then(application => {
         application.jobRated = true;
         application.save();
-        Job.findOne({_id: application.job}).then(job =>{
+        Job.findOne({ _id: application.job }).then(job => {
             job.numRated += 1;
             job.totalRating += Number(req.body.rating);
             job.save();
@@ -210,5 +212,40 @@ router.post('/rateJob', authMiddleware((req, res, midRes) => {
         }).catch(err => { console.log(err) })
     }).catch(err => { console.log(err) })
 }))
+
+router.post('/getApplicantUser', authMiddleware((req, res, midRes) => {
+    console.log('getApplicantUser')
+    if (midRes.type !== 'applicant') {
+        return res.status(500).json({ msg: 'not an applicant' })
+    }
+    Applicant.findOne({ user: midRes.id }).populate('user').then(applicant => {
+        return res.json(applicant)
+    }).catch(err => { return res.status(400).json(err) })
+}))
+
+router.post('/editUser', authMiddleware((req, res, midRes) => {
+    console.log('editUser');
+    if (midRes.type !== 'applicant') {
+        return res.status(500).json({ msg: 'not an applicant' })
+    }
+    console.log(req.body);
+    const { errors, isValid } = editAppValidator(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors)
+    }
+    Applicant.findOne({ user: midRes.id }).then(applicant => {
+        applicant.education = req.body.education;
+        applicant.skills = req.body.skills;
+        applicant.save();
+
+        User.findOne({ _id: midRes.id }).then(user => {
+            user.name = req.body.name;
+            user.save();
+            return res.json(user);
+        }).catch(err => { return res.status(400).json({ msg: err }) })
+    }).catch(err => { return res.status(400).json({ msg: err }) })
+
+}))
+
 
 module.exports = router;

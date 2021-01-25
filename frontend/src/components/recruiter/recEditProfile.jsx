@@ -11,7 +11,7 @@ export default class RecEditProfile extends Component {
             Bio: '',
             contactNumber: '',
             Loading: true,
-            errors: true,
+            errors: {},
         }
         this.onChangeName = this.onChangeName.bind(this)
         this.onChangeBio = this.onChangeBio.bind(this)
@@ -30,8 +30,9 @@ export default class RecEditProfile extends Component {
                 Bio: this.state.recruiter.Bio,
                 contactNumber: this.state.recruiter.contactNumber
             })
-        }).catch(e => {
-            console.log(e);
+        }).catch(err => {
+            console.log(err);
+
         })
     }
 
@@ -54,7 +55,16 @@ export default class RecEditProfile extends Component {
     onSubmit(e) {
         var req = { name: this.state.name, Bio: this.state.Bio, contactNumber: this.state.contactNumber }
         console.log(req)
-        axios.post('http://localhost:5000/recruiter/editProfile', req)
+        axios.post('http://localhost:5000/recruiter/editProfile', req).then(res => {
+            console.log(res);
+            window.location.replace('/')
+        }).catch(err => {
+            console.log(err);
+            if (err.response)
+                this.setState({
+                    errors: err.response.data
+                })
+        })
     }
 
     render() {
@@ -72,8 +82,8 @@ export default class RecEditProfile extends Component {
 
                 <div className='form-group'>
                     <label>contact number </label>
-                    <input type='text' value={this.state.contactNumber} required id='name' onChange={this.onChangeContactNumber} />
-                    <div className="text-danger">{this.state.errors.name}</div>
+                    <input type='text' value={this.state.contactNumber} required id='contactNumber' onChange={this.onChangeContactNumber} />
+                    <div className="text-danger">{this.state.errors.contactNumber}</div>
                 </div>
 
                 <div className='form-group'>
@@ -85,7 +95,7 @@ export default class RecEditProfile extends Component {
                         value={this.state.Bio}
                         onChange={this.onChangeBio}
                     />
-                    <div className="text-danger">{this.state.errors.name}</div>
+                    <div className="text-danger">{this.state.errors.Bio}</div>
                 </div>
 
 
