@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import Moment from 'react-moment';
 import axios from 'axios';
+import emailjs from 'emailjs-com';
 
 export default class ApplicationCard extends Component {
 
@@ -55,6 +56,7 @@ export default class ApplicationCard extends Component {
             .then(res => {
                 alert('accepted');
                 window.location.reload();
+                //to send email
             })
             .catch(err => {
                 if (err['response']['data']) {

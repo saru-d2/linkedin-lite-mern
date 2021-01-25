@@ -86,7 +86,12 @@ router.post('/getJobDetails', authMiddleware((req, res, midRes) => {
     }
     var _id = req.body.jobId;
     // console.log(req.body);
-    Job.findOne({ _id }).then(job => {
+    Job.findOne({ _id }).populate({
+        path: 'recruiter',
+        populate: {
+        path: 'user',
+    }
+    }).then(job => {
         // console.log(job);
         res.status(200).json(job);
     }).catch(err => {
