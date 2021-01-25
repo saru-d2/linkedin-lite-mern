@@ -32,6 +32,7 @@ export default class NavBar extends Component {
                 <React.Fragment>
                     <Nav.Link href='/addJob'>add job</Nav.Link>
                     <Nav.Link href='/recViewJobs'>see jobs u posted</Nav.Link>
+                    <Nav.Link href='/recViewAcc'>see accepted applicants</Nav.Link>
                     <Nav.Link href='/'>recruiter</Nav.Link>
                     <Nav.Link href='/logout'>logout</Nav.Link>
                 </React.Fragment>

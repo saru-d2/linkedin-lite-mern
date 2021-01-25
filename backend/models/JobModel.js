@@ -2,12 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const JobSchema = new Schema({
-    applications: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Applications', required: true
-        }
-    ],
     recruiter: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Recruiters', required: true
@@ -41,7 +35,16 @@ const JobSchema = new Schema({
         type: Number,
         required: true
     },
-    
+    numApplicants: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    numAccepted: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
     numRated: {
         type: Number,
         required: true,

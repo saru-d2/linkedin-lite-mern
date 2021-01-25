@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import Moment from 'react-moment';
 import axios from 'axios';
+import { Col, Row } from 'react-bootstrap';
+
 
 
 export default class RecJobCardDetails extends Component {
@@ -13,7 +15,6 @@ export default class RecJobCardDetails extends Component {
             Loading: true,
             job: {},
             recruiter: {},
-            array: ["600991e8ba70d87bc00a4ad5", "600998b25b52d380db7004d7"],
         }
     }
 
@@ -42,24 +43,35 @@ export default class RecJobCardDetails extends Component {
                     <p>
                         jobType: {this.state.job.jobType} <br />
                         salary: {this.state.job.salary} <br />
-                        numApplications: {this.state.job.applications.length} <br />
+                        numApplications: {this.state.job.numApplicants} <br />
                         maxApplicants: {this.state.job.maxApplicants} <br />
                         maxPositions: {this.state.job.maxPositions} <br />
                         duration: {this.state.job.duration} months <br />
-                        deadline: <Moment format="YYYY/MM/DD">{this.state.job.deadline}</Moment> 
+                        deadline: <Moment format="YYYY/MM/DD">{this.state.job.deadline}</Moment>
+                        </p>
                         <br />
                         <br />
-                        <Link to={{
-                            pathname: '/recSeeJobApps',
-                            state: {
-                                jobId: this.state.job._id
-                            }
-                        }} >see details</Link>
+                        <Row>
+                            <Col>
+                                <Link to={{
+                                    pathname: '/recSeeJobApps',
+                                    state: {
+                                        jobId: this.state.job._id
+                                    }
+                                }} >see applications</Link></Col>
+                            <Col>
+                                <Link to={{
+                                    pathname: '/recEditJob',
+                                    state: {
+                                        jobId: this.state.job._id
+                                    }
+                                }} >Edit job</Link>
+                            </Col>
+                        </Row>
                         <br />
                         <br />
                         {JSON.stringify(this.state.job)}<br />
                         {typeof (this.state.job.applications)}
-                    </p>
                 </div>
             </div >
         )

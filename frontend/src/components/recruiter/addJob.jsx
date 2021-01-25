@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Creatable from 'react-select/creatable';
 import { Redirect } from 'react-router-dom';
+import Creatable from 'react-select/creatable';
 import DatePicker from 'react-date-picker'
 
 const defaultLangs = [
@@ -35,7 +35,7 @@ export default class AddJob extends Component {
     }
     onSubmit(e) {
         console.log(this.props.userEmail)
-        axios.post('http://localhost:5000/recruiter/addjob', this.state.jobData)
+        axios.post('http://localhost:5000/recruiter/addjob', this.state.job)
             .then(res => {
                 console.log('success!');
                 alert('success');
@@ -52,6 +52,7 @@ export default class AddJob extends Component {
     }
 
     onChangeSkills(value) {
+        console.log(value)
         var tempJob = this.state.jobData;
         var skillList = []
         value.map((ob) => {
@@ -135,7 +136,9 @@ export default class AddJob extends Component {
 
                 <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.jobData)}</div>
                 <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.errors)}</div>
-                {this.state.email}
+                <br/>
+                {JSON.stringify(this.state.skills)}
+
             </div>
         )
     }

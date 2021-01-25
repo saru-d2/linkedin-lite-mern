@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom
 import Moment from 'react-moment';
 import axios from 'axios';
 
-export default class ApplicationCard extends Component {
+export default class RecAppCard extends Component {
 
     constructor(props) {
         super(props);
@@ -138,6 +138,7 @@ export default class ApplicationCard extends Component {
         return (
             <div style={{ 'marginLeft': '5%', }}>
                 <div className='row' >
+                    job: {this.props.application.job.jobTitle} <br/>
                     applicant name: {this.props.application.applicant.user.name}<br />
                 applicant email: {this.props.application.applicant.user.email} <br />
                 rating: {rating} <br />

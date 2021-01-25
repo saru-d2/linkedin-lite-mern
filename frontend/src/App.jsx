@@ -15,6 +15,8 @@ import AppJobCardDetails from './components/applicant/appJobCardDetails'
 import RecJobCardDetails from './components/recruiter/recJobCardDetails'
 import RecSeeJobApps from './components/recruiter/recSeeJobApps'
 import AppViewApplications from './components/applicant/appViewApplications'
+import RecEditJob from './components/recruiter/recEditJob'
+import RecViewAcc from './components/recruiter/recViewAcc'
 
 
 const Signin = require('./components/auth/signin').default;
@@ -33,10 +35,9 @@ export default class App extends Component {
   }
 
   onLogIn(token) {
-    console.log(`token`)
-    console.log(token)
     localStorage.setItem('userToken', token);
     if (token) {
+      console.log(`token ` + token)
       axios.defaults.headers.common['authToken'] = token;
     } else {
       delete axios.defaults.headers.common['authToken']; //sets to null
@@ -75,10 +76,13 @@ export default class App extends Component {
   }
 
   //occurs once
-  componentDidMount() {
+  componentWillMount() {
     console.log('app mounting');
     if (localStorage)
-      if (localStorage.userToken) this.onLogIn(localStorage.userToken);
+      if (localStorage.userToken) {
+        console.log('signed in with token ' + localStorage.userToken)
+        this.onLogIn(localStorage.userToken);
+      }
   }
 
   render() {
@@ -92,16 +96,37 @@ export default class App extends Component {
           <Route exact path='/register' component={Register} />
           <Route exact path='/registerApplicant/:id' component={ApplicantRegister} />
           <Route exact path='/registerRecruiter/:id' component={RecruiterRegister} />
-          <Route exact path='/signin' render={props => <Signin onLogIn={this.onLogIn} />} />
-          <Route exact path="/addjob" render={props => <AddJob userEmail={this.state.userEmail} />} />
-          <Route exact path="/recviewjobs" render={props => <RecViewJobs userEmail={this.state.userEmail} />} />
-          <Route exact path="/appviewjobs" render={props => <AppViewJobs userEmail={this.state.userEmail} />} />
-          <Route exact path="/appjobcarddetails" render={props => <AppJobCardDetails userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
-          <Route exact path="/recjobcarddetails" render={props => <RecJobCardDetails userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
-          <Route exact path="/recseejobapps" render={props => <RecSeeJobApps userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
-          <Route exact path="/appviewapplications" render={props => <AppViewApplications userEmail={this.state.userEmail} />} />
-
+          <Route exact path='/signin' render={
+            props => <Signin onLogIn={this.onLogIn} />} />
           <Route exact path="/logout" render={this.onLogOut} />
+
+          <Route exact path="/addjob" render={props =>
+            <AddJob userEmail={this.state.userEmail} />} />
+
+          <Route exact path="/recviewjobs" render={props =>
+            <RecViewJobs userEmail={this.state.userEmail} />} />
+
+          <Route exact path="/appviewjobs" render={props =>
+            <AppViewJobs userEmail={this.state.userEmail} />} />
+
+          <Route exact path="/appjobcarddetails" render={props =>
+            <AppJobCardDetails userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
+
+          <Route exact path="/recjobcarddetails" render={props =>
+            <RecJobCardDetails userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
+
+          <Route exact path="/recseejobapps" render={props =>
+            <RecSeeJobApps userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
+
+          <Route exact path="/recEditJob" render={props =>
+            <RecEditJob userEmail={this.state.userEmail} jobId={props.location.state.jobId} />} />
+
+          <Route exact path="/appviewapplications" render={props =>
+            <AppViewApplications userEmail={this.state.userEmail} />} />
+
+          <Route exact path="/recViewAcc" render={props =>
+            <RecViewAcc userEmail={this.state.userEmail} />} />
+
         </div>
       </Router>
     )

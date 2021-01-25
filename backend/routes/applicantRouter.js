@@ -14,6 +14,7 @@ const { application } = require("express");
 router.post('/', authMiddleware((req, res, midRes) => {
     console.log('conected');
     console.log(midRes)
+    console.log(req.headers.authtoken)
     return res.json('connected');
 }));
 
@@ -24,7 +25,7 @@ router.post('/viewjobs', authMiddleware((req, res, midRes) => {
         return res.status(500).json({ msg: 'not an applicant' })
     }
     var curDate = new Date();
-    Job.find({deadline: {$gt : curDate}}).then(jobs => {
+    Job.find({ deadline: { $gt: curDate } }).then(jobs => {
         // console.log(req.body.search);
 
         if (req.body.search && !isEmpty(req.body.search)) {
@@ -40,7 +41,7 @@ router.post('/viewjobs', authMiddleware((req, res, midRes) => {
 
 router.post('/getRecruiterUser', authMiddleware((req, res, midRes) => {
     console.log('getRecruiterUser');
-    
+
     if (midRes.type !== 'applicant') {
         return res.status(500).json({ msg: 'not an applicant' })
     }
@@ -80,45 +81,44 @@ router.post('/applyForJob', authMiddleware((req, res, midRes) => {
     if (midRes.type !== 'applicant') {
         return res.status(500).json({ msg: 'not an applicant' })
     }
+    console.log('apply')
     // console.log(req.body)
     var jobData = req.body.job;
     // console.log(jobData)
     var email = req.body.email;
     var SOP = req.body.SOP;
     // console.log(midRes)
-    Applicant.findOne({}).populate({
-        path: 'user',
-        match: { email: email },
-    }).then(applicant => {
-        if (!applicant) { return res.status(400).json({ msg: 'user not in applicants' }) }
-        // console.log(applicant);
-        Job.findOne({ _id: jobData._id }).then(job => {
-            if (!job) return res.status(400).json({ msg: 'job not in database' });
-            const newApplication = new Application({
-                applicant: applicant,
-                job: job,
-                SOP: SOP,
-                status: 'applied',
-            })
-            Application.findOne({ job: job, applicant: applicant }).then(application => {
-                // console.log(`application: ${application}`);
-                if (application) {
-                    console.log('only one per person per job')
-                    return res.status(400).json({ msg: 'Uve already applied for this job' });
-                }
-                newApplication.save().then(application => {
-                    // console.log(application);
-                    var jobApplicantsList = job.applications;
-                    jobApplicantsList = [...jobApplicantsList, application];
-                    job.applications = jobApplicantsList;
-                    job.save();
-                    res.status(200).json(application);
-                }).catch(err => { console.log(err); return res.status(400).json(err) })
-            }).catch(err => {
-                console.log(err);
-                return res.status(400).json({ msg: 'something weird' })
-            });
-        }).catch(err => { return res.status(400).json(err) })
+    User.findOne({ email }).then(user => {
+        Applicant.findOne({ user }).then(applicant => {
+            if (!applicant) { return res.status(400).json({ msg: 'user not in applicants' }) }
+            // console.log(applicant);
+            Job.findOne({ _id: jobData._id }).then(job => {
+                if (!job) return res.status(400).json({ msg: 'job not in database' });
+
+                const newApplication = new Application({
+                    applicant: applicant,
+                    job: job,
+                    SOP: SOP,
+                    status: 'applied',
+                    recruiter: job.recruiter,
+                })
+                Application.findOne({ job: job, applicant: applicant }).then(application => {
+                    // console.log(`application: ${application}`);
+                    if (application) {
+                        console.log('only one per person per job')
+                        return res.status(400).json({ msg: 'Uve already applied for this job' });
+                    }
+                    newApplication.save().then(application => {
+                        job.numApplicants += 1;
+                        job.save();
+                        res.status(200).json(application);
+                    }).catch(err => { console.log(err); return res.status(400).json(err) })
+                }).catch(err => {
+                    console.log(err);
+                    return res.status(400).json({ msg: 'something weird' })
+                });
+            }).catch(err => { return res.status(400).json(err) })
+        }).catch(err => { console.log(err); return res.status(400).json(err) })
     }).catch(err => { console.log(err); return res.status(400).json(err) })
 }))
 
@@ -127,15 +127,14 @@ router.post('/listApplications', authMiddleware((req, res, midRes) => {
         return res.status(500).json({ msg: 'not an applicant' })
     }
     var userEmail = req.body.userEmail;
-    // console.log(userEmail)
-    Applicant.findOne({}).populate({
-        path: 'user',
-        match: { email: userEmail },
-    }).then(applicant => {
-        Application.find({ applicant: applicant }).then(applications => {
-            return res.status(200).json(applications);
+    User.findOne({ email: userEmail })
+        .then(user => {
+            Applicant.findOne({ user: user._id }).then(applicant => {
+                Application.find({ applicant: applicant }).then(applications => {
+                    return res.status(200).json(applications);
+                }).catch(err => { return res.status(400).json(err) })
+            }).catch(err => { return res.status(400).json(err) })
         }).catch(err => { return res.status(400).json(err) })
-    }).catch(err => { return res.status(400).json(err) })
 }))
 
 router.post('/getJobFromApplication', authMiddleware((req, res, midRes) => {
@@ -152,5 +151,28 @@ router.post('/getJobFromApplication', authMiddleware((req, res, midRes) => {
             return res.status(400).json(err);
         })
 }))
+
+router.post('/getPrevApplications', authMiddleware((req, res, midRes) => {
+    if (midRes.type !== 'applicant') {
+        return res.status(500).json({ msg: 'not an applicant' })
+    }
+    var userId = midRes.id;
+    console.log(userId)
+    // console.log(midRes);
+    Applicant.findOne({ user: userId }).then(applicant => {
+        console.log(applicant)
+        Application.find({ applicant: applicant, status: {$ne: 'rejected'} }).then(applications => {
+            console.log(applications)
+            return res.status(200).json(applications)
+        }).catch(err => {
+            console.log(err)
+            return res.status(400).json(err);
+        })
+    }).catch(err => {
+        console.log(err)
+        return res.status(400).json(err);
+    })
+}))
+
 
 module.exports = router;

@@ -12,7 +12,7 @@ export default class RecJobCard extends Component {
                         <p>
                             jobType: {this.props.job.jobType} <br />
                         salary: {this.props.job.salary} <br />
-                        numApplications: {JSON.stringify(this.props.job.applications)} <br />
+                        number of Applications: {this.props.job.numApplicants} <br />
                         deadline: <Moment format="YYYY/MM/DD">{this.props.job.deadline}</Moment> <br />
                         </p>
                     </div>

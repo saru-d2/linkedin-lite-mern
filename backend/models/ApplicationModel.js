@@ -6,6 +6,10 @@ const ApplicationSchema = new Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref: 'Applicants', required: true
     },
+    recruiter: {
+        type : mongoose.Schema.Types.ObjectId,
+        ref: 'Recruiters', required: true
+    },
     SOP: {
         type: String
     },

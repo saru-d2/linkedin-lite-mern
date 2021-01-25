@@ -64,13 +64,13 @@ export default class Register extends Component {
 
         <div className='form-group'>
           <label>password</label>
-          <input type='text' required id='password' onChange={this.onChange} />
+          <input type='password' required id='password' onChange={this.onChange} />
           <div className="text-danger">{this.state.errors.password}</div>
         </div>
 
         <div className='form-group'>
           <label>password_confirm</label>
-          <input type='text' required id='password_confirm' onChange={this.onChange} />
+          <input type='password' required id='password_confirm' onChange={this.onChange} />
           <div className="text-danger">{this.state.errors.password_confirm}</div>
 
         </div>

@@ -29,6 +29,9 @@ export default class AppJobCard extends Component {
             });
             console.log(err);
         })
+
+        if (this.props.job.numRated == 0) this.props.job.rating = 0;
+        else this.props.job.rating = this.props.job.totalRating/this.props.job.numRated;
     }
 
     onClick(e) {
@@ -45,7 +48,8 @@ export default class AppJobCard extends Component {
                         <p>
                             jobType: {this.props.job.jobType} <br />
                         salary: {this.props.job.salary} <br />
-                        recruiter: {this.state.recruiter.user.name}
+                        recruiter: {this.state.recruiter.user.name} <br/>
+                        rating: {this.props.job.rating}
                         </p>
                     </div>
                     <div className='col'>
@@ -58,6 +62,7 @@ export default class AppJobCard extends Component {
                             }} >see more and apply!</Link>
                     </div>
                 </div>
+                {JSON.stringify(this.props.job)}
             </div>
         )
     }

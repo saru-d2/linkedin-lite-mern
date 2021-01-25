@@ -86,7 +86,7 @@ export default class Signin extends Component {
 
                 <div className='form-group'>
                     <label>password</label>
-                    <input type='text' required id='password' onChange={this.onChange} />
+                    <input type='password' required id='password' onChange={this.onChange} />
                     <div className="text-danger">{this.state.errors.password}</div>
                 </div>
 
