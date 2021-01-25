@@ -126,15 +126,18 @@ router.post('/listApplications', authMiddleware((req, res, midRes) => {
     if (midRes.type !== 'applicant') {
         return res.status(500).json({ msg: 'not an applicant' })
     }
-    var userEmail = req.body.userEmail;
-    User.findOne({ email: userEmail })
-        .then(user => {
-            Applicant.findOne({ user: user._id }).then(applicant => {
-                Application.find({ applicant: applicant }).then(applications => {
-                    return res.status(200).json(applications);
-                }).catch(err => { return res.status(400).json(err) })
-            }).catch(err => { return res.status(400).json(err) })
+    Applicant.findOne({ user: midRes.id }).then(applicant => {
+        Application.find({ applicant }).populate('job').populate({
+            path: 'recruiter',
+            populate: {
+                path: 'user',
+                model: 'Users',
+            },
+        }).then(applications => {
+            console.log(applications)
+            return res.json(applications);
         }).catch(err => { return res.status(400).json(err) })
+    }).catch(err => { return res.status(400).json(err) })
 }))
 
 router.post('/getJobFromApplication', authMiddleware((req, res, midRes) => {
@@ -161,7 +164,7 @@ router.post('/getPrevApplications', authMiddleware((req, res, midRes) => {
     // console.log(midRes);
     Applicant.findOne({ user: userId }).then(applicant => {
         console.log(applicant)
-        Application.find({ applicant: applicant, status: {$ne: 'rejected'} }).then(applications => {
+        Application.find({ applicant: applicant, status: { $ne: 'rejected' } }).then(applications => {
             console.log(applications)
             return res.status(200).json(applications)
         }).catch(err => {
@@ -174,5 +177,38 @@ router.post('/getPrevApplications', authMiddleware((req, res, midRes) => {
     })
 }))
 
+
+router.post('/getAcceptedApp', authMiddleware((req, res, midRes) => {
+    console.log('getApplicant')
+    if (midRes.type !== 'applicant') {
+        return res.status(500).json({ msg: 'not an applicant' })
+    }
+    var userId = midRes.id;
+    Applicant.findOne({ user: userId }).then(applicant => {
+        Application.findOne({ status: 'accepted', applicant: applicant }).then(accApp => {
+            if (!accApp) return res.json(false);
+            return res.json(true);
+        })
+    }).catch(err => {
+        return res.status(400).json(err);
+    })
+}))
+
+router.post('/rateJob', authMiddleware((req, res, midRes) => {
+    console.log('rateJob')
+    if (midRes.type !== 'applicant') {
+        return res.status(500).json({ msg: 'not an applicant' })
+    }
+    Application.findOne({_id: req.body.application._id}).then(application => {
+        application.jobRated = true;
+        application.save();
+        Job.findOne({_id: application.job}).then(job =>{
+            job.numRated += 1;
+            job.totalRating += Number(req.body.rating);
+            job.save();
+            return res.json(job);
+        }).catch(err => { console.log(err) })
+    }).catch(err => { console.log(err) })
+}))
 
 module.exports = router;

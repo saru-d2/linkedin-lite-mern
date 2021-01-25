@@ -35,7 +35,7 @@ export default class AddJob extends Component {
     }
     onSubmit(e) {
         console.log(this.props.userEmail)
-        axios.post('http://localhost:5000/recruiter/addjob', this.state.job)
+        axios.post('http://localhost:5000/recruiter/addjob', this.state.jobData)
             .then(res => {
                 console.log('success!');
                 alert('success');

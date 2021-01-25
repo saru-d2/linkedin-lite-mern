@@ -17,7 +17,8 @@ import RecSeeJobApps from './components/recruiter/recSeeJobApps'
 import AppViewApplications from './components/applicant/appViewApplications'
 import RecEditJob from './components/recruiter/recEditJob'
 import RecViewAcc from './components/recruiter/recViewAcc'
-
+import RecEditProfile from './components/recruiter/recEditProfile'
+import AppEditProfile from './components/applicant/appEditProfile'
 
 const Signin = require('./components/auth/signin').default;
 export default class App extends Component {
@@ -126,7 +127,10 @@ export default class App extends Component {
 
           <Route exact path="/recViewAcc" render={props =>
             <RecViewAcc userEmail={this.state.userEmail} />} />
-
+          <Route exact path="/recEditProfile" render={props =>
+            <RecEditProfile userEmail={this.state.userEmail} />} />
+            <Route exact path="/appEditProfile" render={props =>
+            <AppEditProfile userEmail={this.state.userEmail} />} />
         </div>
       </Router>
     )

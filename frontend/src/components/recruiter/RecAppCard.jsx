@@ -8,85 +8,34 @@ export default class RecAppCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Loading1: true,
-            Loading2: true,
-            job: {},
+            rating: null,
         }
 
-        this.onAccept = this.onAccept.bind(this);
-        this.onReject = this.onReject.bind(this);
-        this.onShortlist = this.onShortlist.bind(this);
+        this.onRate = this.onRate.bind(this)
+        this.onChangeRating = this.onChangeRating.bind(this);
     }
 
-    componentDidMount() {
-
-        var req = { jobId: this.props.application.job }
-        axios.post('http://localhost:5000/recruiter/getJobDetails', req).then(res => {
-            this.setState({
-                job: res.data,
-                Loading2: false,
-            })
+    onRate() {
+        if (!this.state.rating || this.state.rating > 5 || this.state.rating < 1) { alert('check the value of rating'); return; }
+        var req = { application: this.props.application, rating: this.state.rating }
+        console.log(req);
+        axios.post('http://localhost:5000/recruiter/rateApplicant', req).then(res => {
+            console.log(res);
+            alert('done!');
+            this.setState({ rating: req.rating });
+            window.location.reload(false);
+        }).catch(err => {
+            console.log(err);
         })
-        axios.post()
     }
 
-    onReject(e) {
+    onChangeRating(e) {
         e.preventDefault();
-        var req = { applicationId: this.props.application._id }
-        axios.post('http://localhost:5000/recruiter/rejectApplicant', req)
-            .then(res => {
-                alert('rejected');
-                window.location.reload();
-            })
-            .catch(err => {
-                if (err['response']['data']) {
-                    console.log(err.response.data);
-                } else {
-                    console.log('error')
-                }
-                alert('error');
-            })
-        console.log('reject')
-    }
-    onAccept(e) {
-        e.preventDefault();
-        var req = { applicationId: this.props.application._id }
-        axios.post('http://localhost:5000/recruiter/acceptApplicant', req)
-            .then(res => {
-                alert('accepted');
-                window.location.reload();
-            })
-            .catch(err => {
-                if (err['response']['data']) {
-                    console.log(err.response.data);
-                } else {
-                    console.log('error')
-                }
-                alert('error');
-            })
-        console.log('accept')
-    }
-    onShortlist(e) {
-        e.preventDefault();
-        var req = { applicationId: this.props.application._id }
-        axios.post('http://localhost:5000/recruiter/shortlistApplicant', req)
-            .then(res => {
-                alert('shortlisted');
-                window.location.reload();
-            })
-            .catch(err => {
-                if (err['response']['data']) {
-                    console.log(err.response.data);
-                } else {
-                    console.log('error')
-                }
-                alert('error');
-            })
-        console.log('shortlist')
+        this.setState({ rating: e.target.value });
     }
 
     render() {
-        if (this.state.Loading2 || this.state.Loading2) return (<h1>LOADING</h1>)
+        // if (this.state.Loading2 || this.state.Loading2) return (<h1>LOADING</h1>)
 
         var eduList = this.props.application.applicant.education.map(edu =>
             <div className='row'>
@@ -105,40 +54,18 @@ export default class RecAppCard extends Component {
             skillStr += ' ' + this.props.application.applicant.skills[i].lang + ' '
         }
 
-        var buttons = null;
-        if (this.props.application.status === 'accepted')
-            buttons = <div>
-                <button style={{ backgroundColor: "green" }}> already acepted</button>
+        var RateButton = <button style={{ backgroundColor: 'red' }}> already Rated </button>
+        if (!this.props.application.appRated) {
+            console.log('not rated')
+            RateButton = <div>
+                <input type='number' min='1' max='5' onChange={this.onChangeRating} />
+                <button value={this.state.rating} onClick={this.onRate} style={{ backgroundColor: 'green' }} onChange={this.onChangeRating}> rate! </button>
             </div>
-        else if (this.state.job.numAccepted >= this.state.job.maxPositions) buttons = <div>
-            <button style={{ backgroundColor: "red" }}>full</button>
-        </div>
-        else if (this.props.application.status === 'applied') buttons = <div>
-            <div className='row'>
-                <div className='col'>
-                    <button onClick={this.onShortlist}>shortlist</button>
-                </div>
-                <div className='col'>
-                    <button onClick={this.onReject}>reject</button>
-                </div>
-            </div>
-        </div>
-
-        else if (this.props.application.status === 'shortlisted') buttons = <div>
-            <div className='row'>
-                <div className='col'>
-                    <button onClick={this.onAccept}>accept</button>
-                </div>
-                <div className='col'>
-                    <button onClick={this.onReject}>reject</button>
-                </div>
-            </div>
-        </div>
-
+        }
         return (
             <div style={{ 'marginLeft': '5%', }}>
                 <div className='row' >
-                    job: {this.props.application.job.jobTitle} <br/>
+                    job: {this.props.application.job.jobTitle} <br />
                     applicant name: {this.props.application.applicant.user.name}<br />
                 applicant email: {this.props.application.applicant.user.email} <br />
                 rating: {rating} <br />
@@ -157,13 +84,13 @@ export default class RecAppCard extends Component {
                     skills:
                     {skillStr}
                 </div >
-                date: {this.props.application.date}
+                date of joining: {this.props.application.accDate}
 
                 <br />
-                {buttons}
+                {RateButton} <br />
+                {JSON.stringify(this.state.rating)}
 
-
-                {JSON.stringify(this.state.job)}
+                {JSON.stringify(this.props.application)}
             </div>
         )
     }

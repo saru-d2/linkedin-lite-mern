@@ -99,7 +99,6 @@ export default class AppJobCardDetails extends Component {
             if (!done) {
                 if (this.state.job.numApplicants >= this.state.job.maxApplicants)
                     applyButton = <button style={{ backgroundColor: "red" }}>full</button>
-
             }
 
         }

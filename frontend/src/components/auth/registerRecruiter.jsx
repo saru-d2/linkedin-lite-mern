@@ -30,16 +30,16 @@ export default class RecruiterRegister extends Component {
         var subOb = this.state.userData;
         subOb['email'] = email;
         axios.post('http://localhost:5000/auth/register/recruiter', subOb)
-        .then( res => {
-            
-            alert('Done! please continue to signin!');
-            window.location.replace('http://localhost:3000/signin/');
+            .then(res => {
 
-        }).catch(err=> {
-            console.log(err.response.data);
-            alert(`from backend ${err}`);
-            this.setState({errors: err.response.data});
-        })
+                alert('Done! please continue to signin!');
+                window.location.replace('http://localhost:3000/signin/');
+
+            }).catch(err => {
+                console.log(err.response.data);
+                alert(`from backend ${err}`);
+                this.setState({ errors: err.response.data });
+            })
     }
 
     render() {
@@ -52,7 +52,12 @@ export default class RecruiterRegister extends Component {
                 </div>
                 <div className='form-group'>
                     <label>Bio</label>
-                    <input type='text' required id='Bio' onChange={this.onChange} />
+                    <textarea
+                        className="form-control"
+                        id="Bio"
+                        rows="5"
+                        onChange={this.onChange}
+                    />
                     <div className="text-danger">{this.state.errors.Bio}</div>
                 </div>
                 <div className='submitButton'>

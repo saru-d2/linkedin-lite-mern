@@ -31,7 +31,7 @@ export default class AppJobCard extends Component {
         })
 
         if (this.props.job.numRated == 0) this.props.job.rating = 0;
-        else this.props.job.rating = this.props.job.totalRating/this.props.job.numRated;
+        else this.props.job.rating = this.props.job.totalRating / this.props.job.numRated;
     }
 
     onClick(e) {
@@ -40,6 +40,19 @@ export default class AppJobCard extends Component {
 
     render() {
         if (this.state.Loading) return (<h1>loading</h1>)
+
+        var link = <Link
+            to={{
+                pathname: '/appJobCardDetails',
+                state: {
+                    jobId: this.props.job._id
+                }
+            }} >see more and apply!</Link>
+
+        if (this.props.isAccepted) link = <button style={{ backgroundColor:'red' }}> you already have a job
+        </button>
+
+
         return (
             <div>
                 <div className='card-body row'>
@@ -48,21 +61,16 @@ export default class AppJobCard extends Component {
                         <p>
                             jobType: {this.props.job.jobType} <br />
                         salary: {this.props.job.salary} <br />
-                        recruiter: {this.state.recruiter.user.name} <br/>
+                        recruiter: {this.state.recruiter.user.name} <br />
                         rating: {this.props.job.rating}
                         </p>
                     </div>
                     <div className='col'>
-                        <Link
-                            to={{
-                                pathname: '/appJobCardDetails',
-                                state: {
-                                    jobId: this.props.job._id
-                                }
-                            }} >see more and apply!</Link>
+                        {link}
                     </div>
                 </div>
                 {JSON.stringify(this.props.job)}
+                {JSON.stringify(this.props.isAccepted)}
             </div>
         )
     }

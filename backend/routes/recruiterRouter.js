@@ -11,6 +11,7 @@ const Application = require('../models/ApplicationModel');
 
 //validators
 const addJobValidator = require('../validators/recruiter/addJobValidator');
+const ApplicantModel = require("../models/ApplicantModel");
 
 router.post('/', authMiddleware((req, res, midRes) => {
     console.log('conected');
@@ -23,12 +24,13 @@ router.post('/addJob', authMiddleware((req, res, midRes) => {
     if (midRes.type !== 'recruiter') {
         return res.status(500).json({ msg: 'not an recruiter' })
     }
+    console.log(req.body)
     const { errors, isValid } = addJobValidator(req.body);
     if (!isValid) {
         return res.status(400).json(errors);
     }
     const email = req.body.email;
-    Recruiter.findOne({}).populate({
+    Recruiter.findOne({ _id: midRes.id }).populate({
         path: 'user',
         match: { email: email },
     }).then(recruiter => {
@@ -183,24 +185,21 @@ router.post('/acceptApplicant', authMiddleware((req, res, midRes) => {
     var applicationId = req.body.applicationId;
     Application.findOne({ _id: applicationId }).then(application => {
         application.status = 'accepted';
+        application.accDate = new Date();
         application.save();
         console.log(application)
-        Application.find({ applicant: { $ne: application.applicant } }).exec((err, doc) => {
+        Application.updateMany(
+            { applicant: application.applicant, _id: { $ne: application._id } },
+            { $set: { status: 'rejected' } }
+        ).then(app => {
             console.log('hi')
-            if (err) {
-                console.log(err);
-                return res.status(400).json(err);
-            }
-            console.log(doc);
-            if (doc._id !== applicationId) {
-                doc.status = 'rejected'
-            }
+            console.log(app)
             Job.findOne({ _id: application.job }).then(job => {
                 job.numAccepted = job.numAccepted + 1;
                 job.save();
                 return res.json(application);
-            })
-        })
+            }).catch(e => { return res.status(400).json(e) })
+        }).catch(e => { return res.status(400).json(e) })
     }).catch(e => { return res.status(400).json(e) })
 }))
 
@@ -239,6 +238,56 @@ router.post('/deleteJob', authMiddleware((req, res, midRes) => {
             return res.status(200).json(job);
         })
     })
+}))
+
+router.post('/rateApplicant', authMiddleware((req, res, midRes) => {
+    console.log('rateApplicant');
+    if (midRes.type !== 'recruiter') {
+        return res.status(500).json({ msg: 'not a recruiter' })
+    }
+    Application.findOne({ _id: req.body.application._id }).then(application => {
+        application.appRated = true;
+        application.save();
+        Applicant.findOne({ _id: application.applicant }).then(applicant => {
+            applicant.numRated += 1;
+            applicant.totalRating += Number(req.body.rating);
+
+            console.log(typeof (req.body.rating))
+            console.log(typeof (applicant.numRated))
+            console.log(typeof (applicant.totalRating))  
+            applicant.save();
+            return res.json(applicant);
+        }).catch(err => { console.log(err) })
+    }).catch(err => { console.log(err) })
+}))
+
+router.post('/getRecruiterUser', authMiddleware((req, res, midRes) => {
+    console.log('getRecruiterUser');
+    if (midRes.type !== 'recruiter') {
+        return res.status(500).json({ msg: 'not a recruiter' })
+    }
+    _id = midRes.id;
+    Recruiter.findOne({ user: _id }).populate('user').then(recruiter => {
+        return res.json(recruiter);
+    }).catch(e => { return res.status(400).json(error) })
+}))
+
+router.post('/editProfile', authMiddleware((req, res, midRes) => {
+    console.log('editprofile');
+    if (midRes.type !== 'recruiter') {
+        return res.status(500).json({ msg: 'not a recruiter' })
+    }
+    console.log(req.body)
+    Recruiter.findOne({ user: midRes.id }).then(recruiter => {
+        recruiter.contactNumber = req.body.contactNumber;
+        recruiter.Bio = req.body.Bio;
+        recruiter.save();
+        User.findOne({_id: midRes.id}).then(user => {
+            user.name = req.body.name
+            user.save()
+        }).catch(e => { return res.status(400).json(error) })
+
+    }).catch(e => { return res.status(400).json(error) })
 }))
 
 module.exports = router;

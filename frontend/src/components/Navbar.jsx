@@ -19,8 +19,9 @@ export default class NavBar extends Component {
             return (
                 <React.Fragment>
                     <Nav.Link href='/appViewJobs'>view jobs</Nav.Link>
-                    <Nav.Link href='/'>applicant</Nav.Link>
                     <Nav.Link href='/appViewApplications'>see your applications</Nav.Link>
+                    <Nav.Link href='/appEditProfile'>edit profile</Nav.Link>
+                    <Nav.Link >applicant</Nav.Link>
                     <Nav.Link href='/logout'>logout</Nav.Link>
                 </React.Fragment>
             )
@@ -33,6 +34,7 @@ export default class NavBar extends Component {
                     <Nav.Link href='/addJob'>add job</Nav.Link>
                     <Nav.Link href='/recViewJobs'>see jobs u posted</Nav.Link>
                     <Nav.Link href='/recViewAcc'>see accepted applicants</Nav.Link>
+                    <Nav.Link href='/recEditProfile'>edit profile</Nav.Link>
                     <Nav.Link href='/'>recruiter</Nav.Link>
                     <Nav.Link href='/logout'>logout</Nav.Link>
                 </React.Fragment>

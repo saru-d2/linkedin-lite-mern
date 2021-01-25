@@ -11,14 +11,16 @@ export default class AppViewJobs extends Component {
         this.state = {
             email: this.props.userEmail,
             jobList: [],
-            Loading: true,
+            Loading1: true,
+            Loading2: true,
             search: '',
             filter: {
                 jobType: 'select',
                 minSalary: -1,
                 maxSalary: 1000000000,
                 maxDuration: 7,
-            }
+            },
+            isAccepted: {}
         }
         this.onSubmitSearch = this.onSubmitSearch.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
@@ -35,10 +37,18 @@ export default class AppViewJobs extends Component {
                 console.log(`${res.data}`);
                 this.setState({
                     jobList: res.data,
-                    Loading: false
+                    Loading1: false
                 });
             }).catch(err => console.log(err.response))
-
+        axios.post('http://localhost:5000/applicant/getAcceptedApp').then(res => {
+            this.setState({
+                isAccepted: res.data,
+                Loading2: false
+            })
+        }).catch(e => {
+            console.log(e);
+            alert(e);
+        })
     }
 
     onChangeFilter(e) {
@@ -101,7 +111,7 @@ export default class AppViewJobs extends Component {
     render() {
 
 
-        if (this.state.Loading)
+        if (this.state.Loading1 || this.state.Loading2)
             return (<h1>...Loading..</h1>);
 
         console.log(this.state.jobList)
@@ -115,10 +125,10 @@ export default class AppViewJobs extends Component {
             return true;
         }
 
-        var jobCards = this.state.jobList.filter(data => (data['salary'] >= this.state.filter.minSalary && data['salary'] <= this.state.filter.maxSalary) && data['duration'] < this.state.filter.maxDuration && ((this.state.filter.jobType != 'select' && data['jobType'] == this.state.filter.jobType)  || (this.state.filter.jobType == 'select'))).map((job) =>
+        var jobCards = this.state.jobList.filter(data => (data['salary'] >= this.state.filter.minSalary && data['salary'] <= this.state.filter.maxSalary) && data['duration'] < this.state.filter.maxDuration && ((this.state.filter.jobType != 'select' && data['jobType'] == this.state.filter.jobType) || (this.state.filter.jobType == 'select'))).map((job) =>
             <React.Fragment>
                 <div className='card'>
-                    <AppJobCard job={job} />
+                    <AppJobCard job={job} isAccepted={this.state.isAccepted} />
                 </div>
                 <br />
             </React.Fragment>
