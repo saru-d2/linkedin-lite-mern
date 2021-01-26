@@ -91,7 +91,7 @@ export default class App extends Component {
       <Router>
         <NavBar isLoggedIn={this.state.isLoggedIn} userType={this.state.userType} />
         <div style={{ marginLeft: '5%', marginRight: '20%' }}>
-          <h1>Hi {this.state.userEmail}</h1>
+          <div>Hi {this.state.userEmail}</div>
 
           <Route exact path='/test' component={Test} />
           <Route exact path='/register' component={Register} />
