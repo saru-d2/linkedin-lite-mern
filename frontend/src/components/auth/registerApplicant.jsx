@@ -17,14 +17,14 @@ class ApplicantRegister extends Component {
             eduList: [{ instiName: '', startYear: '', endYear: '' }],
             skills: [],
             errors: {},
-            // image: null,
+            img: null,
             // resume: null,
         }
         this.onChangeEdu = this.onChangeEdu.bind(this);
         this.onAddEdu = this.onAddEdu.bind(this);
         this.onRemoveEdu = this.onRemoveEdu.bind(this);
         this.onChangeSkills = this.onChangeSkills.bind(this);
-        // this.onChangeImage = this.onChangeImage.bind(this);
+        this.onChangeImage = this.onChangeImage.bind(this);
         // this.onChangeResume = this.onChangeResume.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
@@ -52,14 +52,24 @@ class ApplicantRegister extends Component {
         this.setState({ skills: value });
     }
 
-    // onChangeImage(e) {
-    //     var tempthis = this;
-    //     var reader = new FileReader();
-    //     reader.onload = function (uploadFile) {
-    //         tempthis.setState({ image: uploadFile.target.result })
-    //     }
-    //     reader.readAsDataURL(e.target.files[0]);
-    // }
+    onChangeImage(e) {
+        e.preventDefault();
+        let oldThis = this;
+        let file = e.target.files[0];
+        console.log(e.target.files[0]);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (upload) {
+                oldThis.setState({
+                    img: upload.target.result
+                })
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        console.log(this.state.img)
+    }
 
     // onChangeResume(e) {
     //     var tempthis = this;
@@ -82,7 +92,7 @@ class ApplicantRegister extends Component {
             email: this.props.match.params.id,
             education: this.state.eduList,
             skills: skillList,
-            // image: this.state.image,
+            img: this.state.img,
             // resume: this.state.resume,
         }
         console.log(subObject)
@@ -148,22 +158,23 @@ class ApplicantRegister extends Component {
                 }
                 <div className="text-danger">{this.state.errors.skills}</div>
 
-                {/* <div className='form-group'>
+                <div className='form-group'>
                     <label>image</label>
                     <input type='file' required id='image' onChange={this.onChangeImage} />
-                    <div className="text-danger">{this.state.errors.image}</div>
+                    <div className="text-danger">{this.state.errors.img}</div>
                 </div>
-                <div className='form-group'>
+
+                {/* <div className='form-group'>
                     <label>resume</label>
                     <input type='file' required id='resume' onChange={this.onChangeResume} />
                     <div className="text-danger">{this.state.errors.resume}</div>
-                </div>
-
-                <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.skills)}</div>
-                {this.state.image}
-                {this.state.resume} */}
+                </div> */}
 
                 <button onClick={() => { this.onSubmit() }} >submit</button>
+                <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.skills)}</div> <br/>
+                img: {this.state.img}
+                {/* {this.state.resume} */}
+
 
             </div>
 

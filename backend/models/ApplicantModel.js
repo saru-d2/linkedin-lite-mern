@@ -25,6 +25,9 @@ const ApplicantSchema = new Schema({
         required: true,
         default: 0
     },
+    img : {
+        type: String,
+    }
     
 });
 

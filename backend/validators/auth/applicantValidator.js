@@ -22,6 +22,10 @@ function applicantValidate(data) {
         errors.skills= 'cmon no skills?'
     }
 
+    if (!data.img || isEmpty(data.img)) {
+        errors.img = "We need an image.";
+    }
+
     console.log(errors)
     return { errors, isValid: isEmpty(errors) };
 }

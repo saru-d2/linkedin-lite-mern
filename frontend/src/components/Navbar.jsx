@@ -57,7 +57,7 @@ export default class NavBar extends Component {
 
         return (
             <div className='navBar'>
-                <Navbar bg="dark" variant="dark" expand="lg">
+                <Navbar  variant="dark" expand="lg" className='navBar'>
                     <Navbar.Brand href='/' onClick={console.log(this.props.userType)}>Linkedin wannabe</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

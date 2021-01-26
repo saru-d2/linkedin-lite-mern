@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import Moment from 'react-moment';
 import axios from 'axios';
+import { Col, Row } from 'react-bootstrap';
 import emailjs from 'emailjs-com';
 
 export default class ApplicationCard extends Component {
@@ -150,15 +151,24 @@ export default class ApplicationCard extends Component {
             </div>
         </div>
 
+        var img = 'no image';
+        if (this.props.application.applicant)
+            if (this.props.application.applicant.img)
+                img = <img src={this.props.application.applicant.img} className="mx-2 card-pic" width="100%" height='100%'/>
+
         return (
             <div style={{ 'marginLeft': '5%', }}>
-                <div className='row' >
+                <Row> <Col >
                     applicant name: {this.props.application.applicant.user.name}<br />
                 applicant email: {this.props.application.applicant.user.email} <br />
                 rating: {rating} <br />
 
                 application status: {this.props.application.status}
-                </div>
+                </Col>
+                    <Col>
+                        {img}
+                    </Col>
+                </Row>
                 education:
                 <div className='row'>
                     <div className='col'>institute</div>
@@ -178,6 +188,7 @@ export default class ApplicationCard extends Component {
 
 
                 {JSON.stringify(this.state.job)}
+                {JSON.stringify(this.props.application.applicant.img)}
             </div>
         )
     }

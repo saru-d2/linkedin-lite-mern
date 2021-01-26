@@ -248,4 +248,18 @@ router.post('/editUser', authMiddleware((req, res, midRes) => {
 }))
 
 
+router.post('/addImg', authMiddleware((req, res, midRes) => {
+    console.log('addImg');
+    if (midRes.type !== 'applicant') {
+        return res.status(500).json({ msg: 'not an applicant' })
+    }
+    console.log(req.body);
+    Applicant.findOne({user: midRes.id}).then( applicant => {
+        applicant.img = req.body.img;
+        applicant.save();
+        return res.json(applicant);
+    })
+}))
+
+
 module.exports = router;

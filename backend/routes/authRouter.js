@@ -114,7 +114,7 @@ router.post('/signin', (req, res) => {
 
 
 router.post('/register/applicant', (req, res) => {
-    const { email, education, skills } = req.body;
+    const { email, education, skills, img } = req.body;
     console.log(req.body);
     const {errors, isValid} = applicantValidate(req.body);
     if (!isValid){
@@ -128,7 +128,7 @@ router.post('/register/applicant', (req, res) => {
             user,
             education,
             skills,
-            // image,
+            img,
             // resume
         });
 
