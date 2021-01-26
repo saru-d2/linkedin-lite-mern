@@ -14,6 +14,7 @@ export default class recViewAcc extends Component {
         this.onSortRating = this.onSortRating.bind(this);
         this.onSortName = this.onSortName.bind(this);
         this.onSortDate = this.onSortDate.bind(this);
+        this.onSortJobTitle = this.onSortJobTitle.bind(this);
     }
 
     componentDidMount() {
@@ -60,6 +61,22 @@ export default class recViewAcc extends Component {
         this.setState({ applicationList: apps })
     }
 
+    onSortJobTitle(e) {
+        e.preventDefault();
+        console.log(e.target.getAttribute('polarity'));
+        const apps = this.state.applicationList;
+
+        apps.sort(function (a, b) {
+            console.log(a.job.jobTitle)
+            console.log(b.job.jobTitle)
+            if (e.target.getAttribute('polarity') == 1)
+                return a.job.jobTitle.localeCompare(b.job.jobTitle)
+            else
+                return b.job.jobTitle.localeCompare(a.job.jobTitle)
+        })
+        this.setState({ applicationList: apps })
+    }
+
     onSortDate(e) {
         e.preventDefault();
         console.log(e.target.getAttribute('polarity'));
@@ -94,46 +111,52 @@ export default class recViewAcc extends Component {
 
         return (
             <div>
-                <Row>
-                    <Col >
-                        sort-by-name
-                    </Col>
-                    <Col >
-                        <Row>
-                            <button id='name' polarity={1} onClick={this.onSortName}>asc</button>
-                        </Row>
-                        <Row>
-                            <button id='salary' polarity={-1} onClick={this.onSortName}>desc
-                            </button>
-                        </Row>
-                    </Col>
-                    <Col >
-                        sort-by-rating
-                    </Col>
-                    <Col >
-                        <Row>
-                            <button id='rating' polarity={1} onClick={this.onSortRating} >asc</button>
-                        </Row>
-                        <Row>
-                            <button id='rating' polarity={-1} onClick={this.onSortRating} >desc
-                                </button>
-                        </Row>
-                    </Col>
-                    <Col >
-                        sort-by-date
-                    </Col>
-                    <Col >
-                        <Row>
-                            <button id='date' polarity={1} onClick={this.onSortDate}>asc</button>
-                        </Row>
-                        <Row>
-                            <button id='date' polarity={-1} onClick={this.onSortDate}>desc
-                            </button>
-                        </Row>
-                    </Col>
-                </Row>
+                <div className='row'>
+
+                    <div className='col'>
+                        <div className='row'>
+                            <button id='name' className='btn shadow-move-cyan' polarity={1} onClick={this.onSortName}>sort-by-name asc</button>
+                        </div>
+                        <div className='row'>
+                            <button id='salary' className='btn shadow-move-cyan' polarity={-1} onClick={this.onSortName}>sort-by-name desc
+        </button>
+                        </div>
+                    </div>
+
+                    <div className='col'>
+                        <div className='row'>
+                            <button id='rating' className='btn shadow-move-cyan' polarity={1} onClick={this.onSortRating} >sort-by-rating asc</button>
+                        </div>
+                        <div className='row'>
+                            <button id='rating' className='btn shadow-move-cyan' polarity={-1} onClick={this.onSortRating} >sort-by-rating desc
+            </button>
+                        </div>
+                    </div>
+
+                    <div className='col'>
+                        <div className='row'>
+                            <button id='date' className='btn shadow-move-cyan' polarity={1} onClick={this.onSortDate}> sort-by-date asc</button>
+                        </div>
+                        <div className='row'>
+                            <button id='date' className='btn shadow-move-cyan' polarity={-1} onClick={this.onSortDate}>sort-by-date desc
+        </button>
+                        </div>
+                    </div>
+
+                    <div className='col'>
+                        <div className='row'>
+                            <button id='name' className='btn shadow-move-cyan' polarity={1} onClick={this.onSortJobTitle}>sort-by-job asc</button>
+                        </div>
+                        <div className='row'>
+                            <button id='salary' className='btn shadow-move-cyan' polarity={-1} onClick={this.onSortJobTitle}>sort-by-job desc
+        </button>
+                        </div>
+                    </div>
+
+                </div>
+
                 {applicationCards}
-                {JSON.stringify(this.state.applicationList)}
+                {/* {JSON.stringify(this.state.applicationList)} */}
             </div>
         )
     }

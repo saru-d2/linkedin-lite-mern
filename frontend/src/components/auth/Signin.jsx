@@ -58,7 +58,7 @@ export default class Signin extends Component {
         var subData = this.state.userData;
         axios.post('http://localhost:5000/auth/signin', subData).then(res => {
             console.log(res);
-            if (res.status == 200){
+            if (res.status == 200) {
                 console.log('hi');
                 this.props.onLogIn(res.data.token);
             }
@@ -76,22 +76,25 @@ export default class Signin extends Component {
     render() {
         return (
             <div>
-                <h1>login/ signin</h1>
+                {/* <h1>login/ signin</h1> */}
 
-                <div className='form-group'>
-                    <label>email</label>
-                    <input type='text' required id='email' onChange={this.onChange} />
-                    <div className="text-danger">{this.state.errors.email}</div>
-                </div>
+                <div className='form-group row'>
+                    <label className='col-lg-2'>email</label>
+                    <div className='col-lg-7'>
+                        <input type='text' required id='email' onChange={this.onChange} />
+                        <div className="text-danger">{this.state.errors.email}</div>
+                    </div></div>
 
-                <div className='form-group'>
-                    <label>password</label>
-                    <input type='password' required id='password' onChange={this.onChange} />
-                    <div className="text-danger">{this.state.errors.password}</div>
+                <div className='form-group row'>
+                    <label className='col-lg-2'>password</label>
+                    <div className='col-lg-7'>
+                        <input type='password' required id='password' onChange={this.onChange} />
+                        <div className="text-danger">{this.state.errors.password}</div>
+                    </div>
                 </div>
 
                 <div className='submitButton'>
-                    <input type='button' value='sign in' onClick={this.onSubmit} />
+                    <input class='btn red shadow' type='button' value='sign in' onClick={this.onSubmit} />
                 </div>
 
             </div>

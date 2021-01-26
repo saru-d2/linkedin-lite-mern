@@ -180,8 +180,8 @@ export default class RecEditJob extends Component {
                         </Col>
                     </Row>
                 </div>
-                {JSON.stringify(this.state.job)} <br />
-                {JSON.stringify(this.state.skillList)}
+                {/* {JSON.stringify(this.state.job)} <br />
+                {JSON.stringify(this.state.skillList)} */}
             </div>
         )
     }

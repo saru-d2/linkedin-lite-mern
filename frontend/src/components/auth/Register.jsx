@@ -40,7 +40,7 @@ export default class Register extends Component {
       }).catch((err) => {
         if (err) {
           alert('error in data!')
-          this.setState({errors: err.response.data});
+          this.setState({ errors: err.response.data });
         }
       })
 
@@ -49,45 +49,53 @@ export default class Register extends Component {
     return (
 
       <div>
-        <div className='form-group'>
-          <label>Name</label>
-          <input type='text' required id='name' onChange={this.onChange} />
-          <div className="text-danger">{this.state.errors.name}</div>
+        <div className='form-group row'>
+          <label className='col-lg-1 col-form-label'>Name</label>
+          <div className='col-lg-10'>
+            <input type='text' required id='name' onChange={this.onChange} />
+            <div className="text-danger">{this.state.errors.name}</div>
+          </div>
         </div>
 
-        <div className='form-group'>
-          <label>email</label>
-          <input type='text' required id='email' onChange={this.onChange} />
-          <div className="text-danger">{this.state.errors.email}</div>
-
+        <div className='form-group row'>
+          <label className='col-lg-1 col-form-label'>email</label>
+          <div className='col-lg-10'>
+            <input type='text' required id='email' onChange={this.onChange} />
+            <div className="text-danger">{this.state.errors.email}</div>
+          </div>
         </div>
 
-        <div className='form-group'>
-          <label>password</label>
-          <input type='password' required id='password' onChange={this.onChange} />
-          <div className="text-danger">{this.state.errors.password}</div>
+        <div className='form-group row'>
+          <label className='col-lg-2 col-form-label'>password</label>
+          <div className='col-lg-10'>
+            <input type='password' required id='password' onChange={this.onChange} />
+            <div className="text-danger">{this.state.errors.password}</div>
+          </div>
         </div>
 
-        <div className='form-group'>
-          <label>password_confirm</label>
-          <input type='password' required id='password_confirm' onChange={this.onChange} />
-          <div className="text-danger">{this.state.errors.password_confirm}</div>
-
+        <div className='form-group row'>
+          <label className='col-lg-2 col-form-label'>password_confirm</label>
+          <div className='col-lg-10'>
+            <input type='password' required id='password_confirm' onChange={this.onChange} />
+            <div className="text-danger">{this.state.errors.password_confirm}</div>
+          </div>
         </div>
 
-        <div className='form-group'>
-          <label>userType</label>
-          <select className="form-control" onChange={this.onChange} id='type' >
-            <option value="applicant" selected>applicant</option>
-            <option value="recruiter">recruiter</option>
-          </select>
+        <div className='form-group row'>
+          <label className='col-lg-2 col-form-label'>userType</label>
+          <div className='col-lg-10'>
+            <select className="form-control" onChange={this.onChange} id='type' style={{width: '50%'}}>
+              <option value="applicant" selected>applicant</option>
+              <option value="recruiter">recruiter</option>
+            </select>
+          </div>
         </div>
 
 
         <div className='submitButton'>
-          <input type='button' value='register' onClick={this.onSubmit} />
+          <input type='button' value='register' className='btn cyan shadow-move' onClick={this.onSubmit} />
         </div>
-        {JSON.stringify(this.state.userData)}
+        {/* {JSON.stringify(this.state.userData)} */}
       </div>
 
 

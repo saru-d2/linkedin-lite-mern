@@ -62,16 +62,30 @@ export default class RecAppCard extends Component {
                 <button value={this.state.rating} onClick={this.onRate} style={{ backgroundColor: 'green' }} onChange={this.onChangeRating}> rate! </button>
             </div>
         }
+
+        var img = 'no image';
+        if (this.props.application.applicant)
+            if (this.props.application.applicant.img)
+                img = <img src={this.props.application.applicant.img} className="mx-2 card-pic" width="100%" height='100%' />
+
+
         return (
+            
             <div style={{ 'marginLeft': '5%', }}>
-                <div className='row' >
-                    job: {this.props.application.job.jobTitle} <br />
-                    applicant name: {this.props.application.applicant.user.name}<br />
+                <div className='row'>
+                    <div className='col'>
+                        job: {this.props.application.job.jobTitle} <br />
+                applicant name: {this.props.application.applicant.user.name}<br />
                 applicant email: {this.props.application.applicant.user.email} <br />
                 rating: {rating} <br />
-
-                application status: {this.props.application.status}
+                    </div>
+                    <div className='col'>
+                        {img}
+                    </div>
                 </div>
+                application status: {this.props.application.status}
+                <br />
+                <br />
                 education:
                 <div className='row'>
                     <div className='col'>institute</div>
@@ -88,9 +102,9 @@ export default class RecAppCard extends Component {
 
                 <br />
                 {RateButton} <br />
-                {JSON.stringify(this.state.rating)}
+                {/* {JSON.stringify(this.state.rating)}
 
-                {JSON.stringify(this.props.application)}
+                {JSON.stringify(this.props.application)} */}
             </div>
         )
     }

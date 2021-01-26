@@ -85,7 +85,7 @@ export default class recSeeJobApps extends Component {
         console.log(this.state.applicationList)
         if (this.state.applicationList.length !== 0)
             var applicationCards = this.state.applicationList.map(application =>
-                <div className='card'>
+                <div className='card shadow-move-cyan'>
                     <ApplicationCard application={application} />
                 </div>
             )
@@ -96,46 +96,43 @@ export default class recSeeJobApps extends Component {
         return (
             < div >
                 <h1>recSeeJobApps</h1>
-                <Row>
-                    <Col >
-                        sort-by-name
-                    </Col>
-                    <Col >
-                        <Row>
-                            <button id='name' polarity={1} onClick={this.onSortName}>asc</button>
-                        </Row>
-                        <Row>
-                            <button id='salary' polarity={-1} onClick={this.onSortName}>desc
+                <div className='row'>
+
+                    <div className='col'>
+                        <div className='row'>
+                            <button id='name'  className='btn shadow-move-cyan' polarity={1} onClick={this.onSortName}>sort-by-name asc</button>
+                        </div>
+                        <div className='row'>
+                            <button id='salary'  className='btn shadow-move-cyan' polarity={-1} onClick={this.onSortName}>sort-by-name desc
                             </button>
-                        </Row>
-                    </Col>
-                    <Col >
-                        sort-by-rating
-                    </Col>
-                    <Col >
-                        <Row>
-                            <button id='rating' polarity={1} onClick={this.onSortRating} >asc</button>
-                        </Row>
-                        <Row>
-                            <button id='rating' polarity={-1} onClick={this.onSortRating} >desc
+                        </div>
+                    </div>
+
+                    <div className='col'>
+                        <div className='row'>
+                            <button id='rating'  className='btn shadow-move-cyan' polarity={1} onClick={this.onSortRating} >sort-by-rating asc</button>
+                        </div>
+                        <div className='row'>
+                            <button id='rating'  className='btn shadow-move-cyan' polarity={-1} onClick={this.onSortRating} >sort-by-rating desc
                                 </button>
-                        </Row>
-                    </Col>
-                    <Col >
-                        sort-by-date
-                    </Col>
-                    <Col >
-                        <Row>
-                            <button id='date' polarity={1} onClick={this.onSortDate}>asc</button>
-                        </Row>
-                        <Row>
-                            <button id='date' polarity={-1} onClick={this.onSortDate}>desc
+                        </div>
+                    </div>
+
+                    <div className='col'>
+                        <div className='row'>
+                            <button id='date'  className='btn shadow-move-cyan' polarity={1} onClick={this.onSortDate}> sort-by-date asc</button>
+                        </div>
+                        <div className='row'>
+                            <button id='date' className='btn shadow-move-cyan' polarity={-1} onClick={this.onSortDate}>sort-by-date desc
                             </button>
-                        </Row>
-                    </Col>
-                </Row>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+
                 {applicationCards}
-                {JSON.stringify(this.state.applicationList)}
+                {/* {JSON.stringify(this.state.applicationList)} */}
             </div >
         )
     }

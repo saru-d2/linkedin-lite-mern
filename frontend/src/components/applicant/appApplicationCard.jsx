@@ -75,7 +75,9 @@ export default class AppApplicationCard extends Component {
                         {RateButton}
                     </Col>
                 </Row>
-                {JSON.stringify(this.state.rating)}
+                date of applying: {this.props.application.date} <br/>
+                date of joining: {this.props.application.accDate}
+                {/* {JSON.stringify(this.state.rating)} */}
 
             </div>
         )

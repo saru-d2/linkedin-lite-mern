@@ -132,10 +132,10 @@ export default class ApplicationCard extends Component {
         else if (this.props.application.status === 'applied') buttons = <div>
             <div className='row'>
                 <div className='col'>
-                    <button onClick={this.onShortlist}>shortlist</button>
+                    <button className='btn cyan shadow-move-cyan' onClick={this.onShortlist}>shortlist</button>
                 </div>
                 <div className='col'>
-                    <button onClick={this.onReject}>reject</button>
+                    <button className='btn red shadow-move-cyan' onClick={this.onReject}>reject</button>
                 </div>
             </div>
         </div>
@@ -143,10 +143,10 @@ export default class ApplicationCard extends Component {
         else if (this.props.application.status === 'shortlisted') buttons = <div>
             <div className='row'>
                 <div className='col'>
-                    <button onClick={this.onAccept}>accept</button>
+                    <button className='btn green shadow-move-cyan' onClick={this.onAccept}>accept</button>
                 </div>
                 <div className='col'>
-                    <button onClick={this.onReject}>reject</button>
+                    <button className='btn red shadow-move-cyan' onClick={this.onReject}>reject</button>
                 </div>
             </div>
         </div>
@@ -154,21 +154,21 @@ export default class ApplicationCard extends Component {
         var img = 'no image';
         if (this.props.application.applicant)
             if (this.props.application.applicant.img)
-                img = <img src={this.props.application.applicant.img} className="mx-2 card-pic" width="100%" height='100%'/>
+                img = <img src={this.props.application.applicant.img} className="mx-2 card-pic" width="100%" height='100%' />
 
         return (
             <div style={{ 'marginLeft': '5%', }}>
-                <Row> <Col >
+                <div className='row mx-2'>
+                    <div className='col'>
                     applicant name: {this.props.application.applicant.user.name}<br />
-                applicant email: {this.props.application.applicant.user.email} <br />
-                rating: {rating} <br />
-
-                application status: {this.props.application.status}
-                </Col>
-                    <Col>
+                    applicant email: {this.props.application.applicant.user.email} <br />
+                    rating: {rating} <br />
+                    application status: {this.props.application.status}
+                    </div>
+                    <div className='col'>
                         {img}
-                    </Col>
-                </Row>
+                    </div>
+                </div>
                 education:
                 <div className='row'>
                     <div className='col'>institute</div>
@@ -177,18 +177,28 @@ export default class ApplicationCard extends Component {
                 </div>
                 {eduList}
                 <br />
-                <div className='row' style={{ 'marginLeft': '0.5%', }}>
-                    skills:
-                    {skillStr}
+                <div className='row pull-left' style={{  alignSelf: 'left' }}>
+                    <div className='col-lg-1'>
+                        skills:
+                    </div>
+                    <div className='col-lg-10'>
+                        {skillStr}
+                    </div>
                 </div >
                 date: {this.props.application.date}
 
                 <br />
+                <br />
+                sop: {this.props.application.SOP}
+                <br/>
+                <br/>
                 {buttons}
+                <br/>
+                <br/>
 
-
+                {/* 
                 {JSON.stringify(this.state.job)}
-                {JSON.stringify(this.props.application.applicant.img)}
+                {JSON.stringify(this.props.application.applicant.img)} */}
             </div>
         )
     }

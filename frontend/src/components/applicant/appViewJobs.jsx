@@ -137,48 +137,42 @@ export default class AppViewJobs extends Component {
 
         return (
             <div>
-                <Row>
-                    <Col lg={6}>
+                <div className='row searchrow '>
+                    <div className='col-lg-4'>
                         <input className="form-control" onChange={this.onChangeSearch} placeholder="Search" id="search" type="text" style={{ width: '100%' }} />
-                    </Col>
-                    <Col lg={1}>
-                        <button onClick={this.onSubmitSearch}>search!</button>
-                    </Col>
-                    <Col lg={1.5}>
-                        sort-by-salary
-                    </Col>
-                    <Col lg={1}>
-                        <Row>
-                            <button id='salary' polarity={1} onClick={this.onSortSalary}>asc</button>
-                        </Row>
-                        <Row>
-                            <button id='salary' polarity={-1} onClick={this.onSortSalary}>desc
+                    </div>
+                    <div className='col-lg-2'>
+                        <button className='btn w-100 h-100 cyan' onClick={this.onSubmitSearch}>search!</button>
+                    </div>
+                    <div className='col-lg-3'>
+                        <div className='row'>
+                            <button id='salary' className='btn btn1 cyan' style={{}} polarity={1} onClick={this.onSortSalary}>sort-by-salary asc</button>
+                        </div>
+                        <div className='row'>
+                            <button id='salary' className='btn red' style={{}} polarity={-1} onClick={this.onSortSalary}> sort-by-salary desc
                             </button>
-                        </Row>
-                    </Col>
-                    <Col lg={1.5}>
-                        sort-by-rating
-                    </Col>
-                    <Col lg={1}>
-                        <Row>
-                            <button id='rating' polarity={1} onClick={this.onSortRating} >asc</button>
-                        </Row>
-                        <Row>
-                            <button id='rating' polarity={-1} onClick={this.onSortRating} >desc
+                        </div>
+                    </div>
+
+                    <div className='col-lg-3'>
+                        <div className='row'>
+                            <button id='rating' className='btn cyan' polarity={1} onClick={this.onSortRating} >sort-by-rating asc</button>
+                        </div>
+                        <div className='row'>
+                            <button id='rating' className='btn red' polarity={-1} onClick={this.onSortRating} >sort-by-rating desc
                                 </button>
-                        </Row>
-                    </Col>
-                </Row>
-                <Row>
-
-                    <Col lg={1}>
+                        </div>
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-lg-1'>
                         filters:
-                    </Col>
+                    </div>
 
-                    <Col lg={1}>
+                    <div className='col-lg-2'>
                         job type:
-                    </Col>
-                    <Col lg={3}>
+                    </div>
+                    <div className='col-lg-2'>
                         <select className="form-control" onChange={this.onChangeFilter} id='jobType' >
                             <option value="select" selected>select
                             </option>
@@ -186,29 +180,29 @@ export default class AppViewJobs extends Component {
                             <option value="Part-time">Part-time</option>
                             <option value="Work-from-home">Work from home</option>
                         </select>
-                    </Col>
-                    <Col lg={1}>
+                    </div>
+                    <div className='col-lg-2'>
                         salary range:
-                    </Col>
-                    <Col lg={1}>
-                        <Row>
+                    </div>
+
+                    <div className='col-lg-2'>
+                        <div className='row'>
                             <input type='number' id='minSalary' value={this.state.filter.minSalary} style={{ width: '100%' }} onChange={this.onChangeFilter} />
-                        </Row>
-                        <Row>
+                        </div>
+                        <div className='row'>
                             <input type='number' id='maxSalary' value={this.state.filter.maxSalary} style={{ width: '100%' }} onChange={this.onChangeFilter} />
-                        </Row>
-                    </Col>
-                    <Col lg={1.5}>
+                        </div>
+                    </div>
+                    <div className='col-lg-2'>
                         max Duration:
-                    </Col>
-                    <Col lg={1}>
+                    </div>
+                    <div className='col-lg-1'>
                         <input type='number' id='maxDuration' value={this.state.filter.maxDuration} style={{ width: '100%' }} onChange={this.onChangeFilter} />
-                    </Col>
-                </Row>
-                {JSON.stringify(this.state.filter)}
-                <h1>wow</h1>
-                {jobCards}
+                </div>
             </div>
+        <h1>wow</h1>
+        { jobCards }
+            </div >
         )
     }
 }

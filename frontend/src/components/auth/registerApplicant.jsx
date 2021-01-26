@@ -112,44 +112,58 @@ class ApplicantRegister extends Component {
 
     render() {
         return (
-            <div className='react' style={{ marginLeft: '5%', marginRight: '20%' }}>
-                <h2>register for applicant</h2>
-                 list ur education pls:
-                {
-                    this.state.eduList.map((ed, index) => {
-                        return (
-                            <div key={index}>
-                                <input name='instiName'
-                                    onChange={(event) => this.onChangeEdu(event, index)}
-                                    value={ed.instiName} placeholder='instiName' />
+            <div className='react' style={{ marginLeft: '5%', marginRight: '5%' }}>
+                <h2>register Applicant</h2>
+                <div className='row'>
+                    <div className='col-lg-2 col-form-labe'>
+                        List education
+                    </div>
+                    <div className='col-lg-10'>
+                        {
+                            this.state.eduList.map((ed, index) => {
+                                return (
+                                    <div key={index} className='row'>
+                                        <div className='col'>
+                                            <input name='instiName' className='form-control'
+                                                onChange={(event) => this.onChangeEdu(event, index)}
+                                                value={ed.instiName} placeholder='instiName' />
+                                        </div>
+                                        <div className='col'>
+                                            <input name='startYear'
+                                                type='text' className='form-control'
+                                                onChange={(event) => this.onChangeEdu(event, index)}
+                                                value={ed.startYear} placeholder='startYear' />
+                                        </div>
+                                        <div className='col'>
+                                            <input name='endYear' className='form-control'
+                                                onChange={(event) => this.onChangeEdu(event, index)}
+                                                value={ed.endYear} placeholder='endYear' />
+                                        </div>
+                                        {this.state.eduList.length !== 1 &&
+                                            <button className='btn red shadow-move' onClick={() => this.onRemoveEdu(index)}>Remove</button>}
+                                        <br />
 
-                                <input name='startYear'
-                                    type='text'
-                                    onChange={(event) => this.onChangeEdu(event, index)}
-                                    value={ed.startYear} placeholder='startYear' />
+                                        <br />
+                                    </div>
+                                )
+                            })
+                        }
 
-                                <input name='endYear'
-                                    onChange={(event) => this.onChangeEdu(event, index)}
-                                    value={ed.endYear} placeholder='endYear' />
-                                {this.state.eduList.length !== 1 &&
-                                    <button onClick={() => this.onRemoveEdu(index)}>Remove</button>}
-                            </div>
-                        )
-                    })
-                }
+                        {<button className='btn cyan shadow-move' onClick={() => this.onAddEdu()}>Add</button>}
+                        <div className="text-danger">{this.state.errors.education}</div>
+                    </div>
+                </div>
 
-                {<button onClick={() => this.onAddEdu()}>Add</button>}
-                <div className="text-danger">{this.state.errors.education}</div>
-
-                <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.eduList)}</div>
+                {/* <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.eduList)}</div> */}
                 <br />
                 <br />
 
                 list ur skills pls:
                 {
-                    <div>
-                        <label>skills</label>
-                        <Creatable onChange={(value) => this.onChangeSkills(value)}
+                    <div className='row'>
+                        <label className='col-lg-1'>skills</label>
+
+                        <Creatable className='col-lg-7' onChange={(value) => this.onChangeSkills(value)}
                             isMulti
                             options={defaultLangs}
                             value={this.state.skills}
@@ -157,11 +171,15 @@ class ApplicantRegister extends Component {
                     </div>
                 }
                 <div className="text-danger">{this.state.errors.skills}</div>
+                <br />
+                <br />
 
-                <div className='form-group'>
-                    <label>image</label>
-                    <input type='file' required id='image' onChange={this.onChangeImage} />
-                    <div className="text-danger">{this.state.errors.img}</div>
+                <div className='form-group row'>
+                    <label className='col-lg-2'>image</label>
+                    <div className='col-lg-5'>
+                        <input type='file' className="form-control"  required id='image' onChange={this.onChangeImage} />
+                        <div className="text-danger">{this.state.errors.img}</div>
+                    </div>
                 </div>
 
                 {/* <div className='form-group'>
@@ -170,9 +188,9 @@ class ApplicantRegister extends Component {
                     <div className="text-danger">{this.state.errors.resume}</div>
                 </div> */}
 
-                <button onClick={() => { this.onSubmit() }} >submit</button>
-                <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.skills)}</div> <br/>
-                img: {this.state.img}
+                <button className='btn red shadow-move' onClick={() => { this.onSubmit() }} >submit</button>
+                {/* <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.skills)}</div> <br />
+                img: {this.state.img} */}
                 {/* {this.state.resume} */}
 
 

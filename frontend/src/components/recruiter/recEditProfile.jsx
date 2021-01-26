@@ -99,12 +99,12 @@ export default class RecEditProfile extends Component {
                 </div>
 
 
-                <button onClick={this.onSubmit}>edit!</button>
+                <button className='btn green' onClick={this.onSubmit}>edit!</button>
 
-                {JSON.stringify(this.state.recruiter)}
+                {/* {JSON.stringify(this.state.recruiter)}
                 {JSON.stringify(this.state.name)}
                 {JSON.stringify(this.state.Bio)}
-                {JSON.stringify(this.state.contactNumber)}
+                {JSON.stringify(this.state.contactNumber)} */}
             </div>
         )
     }

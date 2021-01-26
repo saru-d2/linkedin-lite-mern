@@ -45,10 +45,12 @@ export default class RecruiterRegister extends Component {
     render() {
         return (
             <div>
-                <div className='form-group'>
-                    <label>contact number</label>
-                    <input type='text' required id='contactNumber' onChange={this.onChange} />
-                    <div className="text-danger">{this.state.errors.contactNumber}</div>
+                <div className='form-group row'>
+                    <label className='col-lg-3'>contact number</label>
+                    <div className='col-lg-7'>
+                        <input type='text' required id='contactNumber' onChange={this.onChange} />
+                        <div className="text-danger">{this.state.errors.contactNumber}</div>
+                    </div>
                 </div>
                 <div className='form-group'>
                     <label>Bio</label>
@@ -61,7 +63,7 @@ export default class RecruiterRegister extends Component {
                     <div className="text-danger">{this.state.errors.Bio}</div>
                 </div>
                 <div className='submitButton'>
-                    <input type='button' value='register' onClick={this.onSubmit} />
+                    <input type='button'  className='btn shadow-move red' value='register' onClick={this.onSubmit} />
                 </div>
             </div>
         )

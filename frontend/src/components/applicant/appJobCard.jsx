@@ -41,6 +41,11 @@ export default class AppJobCard extends Component {
     render() {
         if (this.state.Loading) return (<h1>loading</h1>)
 
+        var skillStr = ''
+        for (var i = 0; i < this.props.job.skills.length; i++) {
+            skillStr += ' ' + this.props.job.skills[i].lang + ' '
+        }
+
         var link = <Link
             to={{
                 pathname: '/appJobCardDetails',
@@ -49,7 +54,7 @@ export default class AppJobCard extends Component {
                 }
             }} >see more and apply!</Link>
 
-        if (this.props.isAccepted) link = <button style={{ backgroundColor:'red' }}> you already have a job
+        if (this.props.isAccepted) link = <button style={{ backgroundColor: 'red' }}> you already have a job
         </button>
 
 
@@ -62,15 +67,14 @@ export default class AppJobCard extends Component {
                             jobType: {this.props.job.jobType} <br />
                         salary: {this.props.job.salary} <br />
                         recruiter: {this.state.recruiter.user.name} <br />
-                        rating: {this.props.job.rating}
+                        rating: {this.props.job.rating} <br/>
+                        skills: {skillStr}
                         </p>
                     </div>
                     <div className='col'>
                         {link}
                     </div>
                 </div>
-                {JSON.stringify(this.props.job)}
-                {JSON.stringify(this.props.isAccepted)}
             </div>
         )
     }

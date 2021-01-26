@@ -8,6 +8,7 @@ import NavBar from './components/Navbar';
 import Register from './components/auth/register';
 import ApplicantRegister from './components/auth/registerApplicant'
 import RecruiterRegister from './components/auth/registerRecruiter'
+import Signin from './components/auth/signin'
 import AddJob from './components/recruiter/addJob'
 import RecViewJobs from './components/recruiter/recViewJobs'
 import AppViewJobs from './components/applicant/appViewJobs'
@@ -20,7 +21,6 @@ import RecViewAcc from './components/recruiter/recViewAcc'
 import RecEditProfile from './components/recruiter/recEditProfile'
 import AppEditProfile from './components/applicant/appEditProfile'
 
-const Signin = require('./components/auth/signin').default;
 export default class App extends Component {
   constructor(props) {
     super(props);

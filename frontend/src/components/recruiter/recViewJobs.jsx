@@ -54,10 +54,10 @@ export default class RecViewJobs extends Component {
         console.log(jobCards)
         return (
             <div>
-                <h1>helllllooooo</h1>
+                {/* <h1>helllllooooo</h1> */}
                 {jobCards}
-                <h1> ooga</h1>
-                {JSON.stringify(this.state.jobList)}
+                {/* <h1> ooga</h1> */}
+                {/* {JSON.stringify(this.state.jobList)} */}
 
             </div>
         )

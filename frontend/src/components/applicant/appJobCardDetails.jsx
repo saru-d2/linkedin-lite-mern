@@ -80,7 +80,7 @@ export default class AppJobCardDetails extends Component {
                     onChange={this.onChangeSOP}
                 />
                 <div className="text-danger">{this.state.errors.SOP}</div>
-                <button onClick={this.onApply}>Apply!</button>
+                <button className='btn green shadow-move-cyan' onClick={this.onApply}>Apply!</button>
             </div>
         </div>
 
@@ -103,6 +103,11 @@ export default class AppJobCardDetails extends Component {
 
         }
 
+        var skillStr = ''
+        for (var i = 0; i < this.state.job.skills.length; i++) {
+            skillStr += ' ' + this.state.job.skills[i].lang + ' '
+        }
+
         return (
             <div>
                 <h1>appjobcarddetails</h1>
@@ -115,7 +120,8 @@ export default class AppJobCardDetails extends Component {
                     duration: {this.state.job.duration} months <br />
                     deadline: <Moment format="YYYY/MM/DD">{this.state.job.deadline}</Moment> <br />
                     recruiter name: {this.state.job.recruiter.user.name}<br />
-                    recruiter email: {this.state.job.recruiter.user.email}
+                    recruiter email: {this.state.job.recruiter.user.email} <br/>
+                    skills applicable: {skillStr}
                 </p>
 
                 {/* <div className='form-group'>
@@ -132,10 +138,10 @@ export default class AppJobCardDetails extends Component {
                 {applyButton}
                 <br />
                 {/* <button onClick={this.onApply}>Apply!</button> */}
-                {JSON.stringify(this.state.job)}
+                {/* {JSON.stringify(this.state.job)}
                 {JSON.stringify(this.state.recruiterUser)}<br />
-                {JSON.stringify(this.state.prevApplications)}
-                {this.state.SOP}
+                {JSON.stringify(this.state.prevApplications)} */}
+                {/* {this.state.SOP} */}
 
             </div>
         )

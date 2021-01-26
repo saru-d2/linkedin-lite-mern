@@ -70,8 +70,8 @@ export default class RecJobCardDetails extends Component {
                         </Row>
                         <br />
                         <br />
-                        {JSON.stringify(this.state.job)}<br />
-                        {typeof (this.state.job.applications)}
+                        {/* {JSON.stringify(this.state.job)}<br /> */}
+                        {/* {typeof (this.state.job.applications)} */}
                 </div>
             </div >
         )

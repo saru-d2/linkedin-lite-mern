@@ -72,72 +72,84 @@ export default class AddJob extends Component {
     render() {
         return (
             <div>
-                <h1>add job</h1>
-                <div className='form-group'>
-                    <label>job title</label>
-                    <input type='text' required id='title' onChange={this.onChange} />
-                    <div className="text-danger">{this.state.errors.title}</div>
+                <h3>add job</h3>
+                <br/>
+                <div className='form-group row'>
+                    <label className='col-lg-2'>job title</label>
+                    <div className='col-lg-7'>
+                        <input type='text' required id='title' onChange={this.onChange} />
+                        <div className="text-danger">{this.state.errors.title}</div>
+                    </div></div>
+
+                <div className='form-group row'>
+                    <label className='col-lg-2'>job type</label>
+                    <div className='col-lg-7'>
+                        <select className="form-control" onChange={this.onChange} id='jobType' >
+                            <option value="Full-time" selected>Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Work-from-home">Work from home</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div className='form-group'>
-                    <label>job type</label>
-                    <select className="form-control" onChange={this.onChange} id='jobType' >
-                        <option value="Full-time" selected>Full-time</option>
-                        <option value="Part-time">Part-time</option>
-                        <option value="Work-from-home">Work from home</option>
-                    </select>
+                <div className='form-group row'>
+                    <label className='col-lg-2'>Salary</label>
+                    <div className='col-lg-7'>
+                        <input type='text' required id='salary' onChange={this.onChange} />
+                        <div className="text-danger">{this.state.errors.salary}</div>
+                    </div>
                 </div>
 
-                <div className='form-group'>
-                    <label>Salary</label>
-                    <input type='text' required id='salary' onChange={this.onChange} />
-                    <div className="text-danger">{this.state.errors.salary}</div>
-                </div>
-
-                <div className='form-group'>
-                    <label>Deadline</label>
-                    <DatePicker id='deadline' selected={this.state.date} onChange={this.onChangeDate} minDate={new Date()} value={this.state.jobData['deadline']} />
+                <div className='form-group row'>
+                    <label className='col-lg-2'>Deadline</label>
+                    <div className='col-lg-7'>
+                        <DatePicker id='deadline' selected={this.state.date} onChange={this.onChangeDate} minDate={new Date()} value={this.state.jobData['deadline']} />
+                    </div>
                     <div className="text-danger">{this.state.errors.deadline}</div>
 
                 </div>
 
-                <div className='form-group'>
-                    <label>max num of applications</label>
-                    <input type='text' required id='maxApplicants' onChange={this.onChange} />
-                    <div className="text-danger">{this.state.errors.maxApplicants}</div>
+                <div className='form-group row'>
+                    <label className='col-lg-2'>max applications</label>
+                    <div className='col-lg-7'>
+                        <input type='text' required id='maxApplicants' onChange={this.onChange} />
+                        <div className="text-danger">{this.state.errors.maxApplicants}</div>
+                    </div>
                 </div>
 
-                <div className='form-group'>
-                    <label>max num of positions</label>
-                    <input type='text' required id='maxPositions' onChange={this.onChange} />
-                    <div className="text-danger">{this.state.errors.maxPositions}</div>
+                <div className='form-group row'>
+                    <label className='col-lg-2'>max positions</label>
+                    <div className='col-lg-7'>
+                        <input type='text' required id='maxPositions' onChange={this.onChange} />
+                        <div className="text-danger">{this.state.errors.maxPositions}</div>
+                    </div>
                 </div>
 
-                <div className='form-group'>
-                    <label>Duration in months </label>
-                    <input type='text' required id='duration' onChange={this.onChange} />
-                    <div className="text-danger">{this.state.errors.duration}</div>
+                <div className='form-group row'>
+                    <label className='col-lg-2'>Duration in months </label>
+                    <div className='col-lg-7'>
+                        <input type='text' required id='duration' onChange={this.onChange} />
+                        <div className="text-danger">{this.state.errors.duration}</div>
+                    </div>
                 </div>
 
                 {
-                    <div>
-                        <label>skills required</label>
-                        <Creatable onChange={(value) => this.onChangeSkills(value)}
-                            isMulti
-                            options={defaultLangs}
-                            value={this.state.skills}
-                        />
-                        <div className="text-danger">{this.state.errors.skills}</div>
-
+                    <div className='row'>
+                        <label className='col-lg-2'>skills required</label>
+                        <div className='col-lg-7'>
+                            <Creatable onChange={(value) => this.onChangeSkills(value)}
+                                isMulti
+                                options={defaultLangs}
+                                value={this.state.skills}
+                            />
+                            <div className="text-danger">{this.state.errors.skills}</div>
+                        </div>
                     </div>
                 }
 
-                <button onClick={() => { this.onSubmit() }} >add job</button>
+                <button className='btn red shadow' onClick={() => { this.onSubmit() }} >add job</button>
 
-                <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.jobData)}</div>
-                <div style={{ marginTop: 20 }}>{JSON.stringify(this.state.errors)}</div>
-                <br/>
-                {JSON.stringify(this.state.skills)}
+                <br />
 
             </div>
         )
