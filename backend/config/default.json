@@ -1,4 +1,4 @@
 {
     "jwtSecret" : "sl_myJwtSecret",
-    "sendGridkey": "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"
+    "sendGridkey": "this gave error"
 }
